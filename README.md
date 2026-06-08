@@ -45,21 +45,6 @@ portfolio/
 - Certifications
 - Contact
 
-## 🚀 Getting Started
-
-Clone the repository:
-
-```bash
-git clone https://github.com/Kkarthik23540/portfolio.git
-```
-
-Open the project folder:
-
-```bash
-cd portfolio
-```
-
-Run the project by opening `index.html` in your browser.
 
 ## 🔮 Future Enhancements
 
