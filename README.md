@@ -1,6 +1,6 @@
 # 🌐 Portfolio Website
 
-A modern, responsive, and interactive portfolio website built using HTML, CSS, and JavaScript.
+A modern, responsive, and interactive portfolio website built using HTML, CSS, JavaScript, and Vite.
 
 ## 🚀 Overview
 
@@ -18,12 +18,15 @@ This project showcases a professional portfolio website with a clean design, res
 - Certifications Section
 - Contact Form Validation
 - Back-to-Top Button
+- Vercel Web Analytics
 
 ## 🛠️ Technologies Used
 
 - HTML5
 - CSS3
 - JavaScript (ES6)
+- Vite
+- Vercel Web Analytics
 
 ## 📂 Project Structure
 
@@ -32,8 +35,21 @@ portfolio/
 ├── index.html
 ├── styles.css
 ├── script.js
+├── package.json
+├── public/
+│   ├── robots.txt
+│   └── sitemap.xml
 └── README.md
 ```
+
+## 🧑‍💻 Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+Create a production build with `npm run build`. Vercel deploys the generated `dist/` directory.
 
 ## 📌 Website Sections
 
