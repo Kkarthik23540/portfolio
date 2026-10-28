@@ -464,21 +464,7 @@ h3 {
   font-weight: 700;
 }
 
-.contact-links {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
 
-.contact-links a {
-  padding: 14px 16px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
-  font-weight: 700;
-  text-align: center;
-  overflow-wrap: anywhere;
-}
 
 .back-to-top {
   position: fixed;
@@ -598,7 +584,5 @@ h3 {
     padding: 20px;
   }
 
-  .contact-links {
-    grid-template-columns: 1fr;
-  }
+
 }
