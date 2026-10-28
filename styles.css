@@ -173,7 +173,7 @@ p {
 h1 {
   max-width: 760px;
   margin-bottom: 18px;
-  font-size: clamp(3rem, 8vw, 6.4rem);
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
   line-height: 1.04;
   letter-spacing: 0;
 }
@@ -519,24 +519,29 @@ h3 {
 }
 
 @media (max-width: 860px) {
+  .nav {
+    position: relative;
+  }
+
   .menu-toggle {
     display: block;
   }
 
   .nav-links {
     position: absolute;
-    top: 72px;
-    right: 16px;
-    left: 16px;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
     display: none;
     flex-direction: column;
     align-items: stretch;
-    gap: 0;
-    padding: 10px;
+    gap: 4px;
+    padding: 12px;
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: 12px;
     background: var(--surface);
     box-shadow: var(--shadow);
+    z-index: 1;
   }
 
   .nav-links.open {
@@ -544,7 +549,7 @@ h3 {
   }
 
   .nav-links a {
-    padding: 13px 12px;
+    padding: 10px 12px;
   }
 
   .nav-links a::after {
@@ -575,10 +580,6 @@ h3 {
 @media (max-width: 520px) {
   .container {
     width: min(100% - 24px, 1120px);
-  }
-
-  .brand span:last-child {
-    display: none;
   }
 
   .hero-actions {

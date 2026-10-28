@@ -6,64 +6,80 @@ const revealItems = document.querySelectorAll(".reveal");
 const sections = document.querySelectorAll("main section[id]");
 const contactForm = document.querySelector("#contactForm");
 
-menuToggle.addEventListener("click", () => {
-  const isOpen = navLinks.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
-});
-
-navItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    navLinks.classList.remove("open");
-    menuToggle.setAttribute("aria-expanded", "false");
+if (menuToggle && navLinks) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = navLinks.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
   });
-});
 
-backToTop.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        revealObserver.unobserve(entry.target);
-      }
+  navItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Open menu");
     });
-  },
-  { threshold: 0.14 }
-);
+  });
+}
 
-revealItems.forEach((item) => revealObserver.observe(item));
+if (backToTop) {
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
 
-const sectionObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-
-      navItems.forEach((item) => {
-        item.classList.toggle("active", item.getAttribute("href") === `#${entry.target.id}`);
+if ("IntersectionObserver" in window) {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
       });
-    });
-  },
-  { rootMargin: "-45% 0px -50% 0px" }
-);
+    },
+    { threshold: 0.14 }
+  );
 
-sections.forEach((section) => sectionObserver.observe(section));
+  revealItems.forEach((item) => revealObserver.observe(item));
+
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        navItems.forEach((item) => {
+          item.classList.toggle("active", item.getAttribute("href") === `#${entry.target.id}`);
+        });
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+
+  sections.forEach((section) => sectionObserver.observe(section));
+}
 
 window.addEventListener("scroll", () => {
-  backToTop.classList.toggle("visible", window.scrollY > 500);
+  if (backToTop) {
+    backToTop.classList.toggle("visible", window.scrollY > 500);
+  }
 });
 
 function setFieldError(field, message) {
   const wrapper = field.closest(".form-field");
+  if (!wrapper) return;
+
   const error = wrapper.querySelector(".error-message");
 
   wrapper.classList.toggle("invalid", Boolean(message));
-  error.textContent = message;
+  if (error) {
+    error.textContent = message;
+  }
 }
 
 function validateContactForm() {
+  if (!contactForm) return false;
+
   const name = contactForm.elements.name;
   const email = contactForm.elements.email;
   const message = contactForm.elements.message;
@@ -92,47 +108,49 @@ function validateContactForm() {
   return isValid;
 }
 
-contactForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+if (contactForm) {
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  const status = contactForm.querySelector(".form-status");
-  const submitButton = contactForm.querySelector(".submit-btn");
+    const status = contactForm.querySelector(".form-status");
+    const submitButton = contactForm.querySelector(".submit-btn");
 
-  if (!validateContactForm()) {
-    status.textContent = "Please fix the highlighted fields.";
-    return;
-  }
-
-  submitButton.disabled = true;
-  submitButton.textContent = "Sending...";
-  status.textContent = "";
-
-  try {
-    const response = await fetch(contactForm.action, {
-      method: "POST",
-      body: new FormData(contactForm),
-      headers: {
-        Accept: "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Form submission failed");
+    if (!validateContactForm()) {
+      status.textContent = "Please fix the highlighted fields.";
+      return;
     }
 
-    contactForm.reset();
-    status.textContent = "Message sent successfully.";
-  } catch (error) {
-    status.textContent = "Message could not be sent. Please try again.";
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = "Submit Message";
-  }
-});
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending...";
+    status.textContent = "";
 
-contactForm.querySelectorAll("input, textarea").forEach((field) => {
-  field.addEventListener("input", () => {
-    setFieldError(field, "");
-    contactForm.querySelector(".form-status").textContent = "";
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      contactForm.reset();
+      status.textContent = "Message sent successfully.";
+    } catch (error) {
+      status.textContent = "Message could not be sent. Please try again.";
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit Message";
+    }
   });
-});
+
+  contactForm.querySelectorAll("input, textarea").forEach((field) => {
+    field.addEventListener("input", () => {
+      setFieldError(field, "");
+      contactForm.querySelector(".form-status").textContent = "";
+    });
+  });
+}
