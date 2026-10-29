@@ -94,6 +94,12 @@ runTypewriter();
 updateScrollProgress();
 
 if (menuToggle && navLinks) {
+  function closeMenu() {
+    navLinks.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Open menu");
+  }
+
   menuToggle.addEventListener("click", () => {
     const isOpen = navLinks.classList.toggle("open");
     menuToggle.setAttribute("aria-expanded", String(isOpen));
@@ -101,11 +107,24 @@ if (menuToggle && navLinks) {
   });
 
   navItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      navLinks.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.setAttribute("aria-label", "Open menu");
-    });
+    item.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      navLinks.classList.contains("open") &&
+      !navLinks.contains(event.target) &&
+      !menuToggle.contains(event.target)
+    ) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && navLinks.classList.contains("open")) {
+      closeMenu();
+      menuToggle.focus();
+    }
   });
 }
 
