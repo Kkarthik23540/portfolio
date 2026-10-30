@@ -129,6 +129,7 @@ if (menuToggle && navLinks) {
 }
 
 if (backToTop) {
+  backToTop.setAttribute("tabindex", "-1");
   backToTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
@@ -157,6 +158,10 @@ if ("IntersectionObserver" in window) {
 
   const sectionObserver = new IntersectionObserver(
     (entries) => {
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 30;
+      if (atBottom) return;
+
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
 
@@ -165,7 +170,7 @@ if ("IntersectionObserver" in window) {
         });
       });
     },
-    { rootMargin: "-45% 0px -50% 0px" }
+    { rootMargin: "-30% 0px -40% 0px" }
   );
 
   sections.forEach((section) => sectionObserver.observe(section));
@@ -174,24 +179,66 @@ if ("IntersectionObserver" in window) {
   animateStats();
 }
 
+let scrollTicking = false;
+
+function onScroll() {
+  updateScrollProgress();
+
+  const atBottom =
+    window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 30;
+
+  if (atBottom) {
+    navItems.forEach((item) => {
+      item.classList.toggle("active", item.getAttribute("href") === "#contact");
+    });
+  } else if (window.scrollY < 120) {
+    navItems.forEach((item) => item.classList.remove("active"));
+  }
+
+  if (backToTop) {
+    const isVisible = window.scrollY > 500;
+    backToTop.classList.toggle("visible", isVisible);
+    backToTop.setAttribute("tabindex", isVisible ? "0" : "-1");
+  }
+
+  scrollTicking = false;
+}
+
 window.addEventListener(
   "scroll",
   () => {
-    updateScrollProgress();
-    if (backToTop) {
-      backToTop.classList.toggle("visible", window.scrollY > 500);
+    if (!scrollTicking) {
+      window.requestAnimationFrame(onScroll);
+      scrollTicking = true;
+    }
+  },
+  { passive: true }
+);
+
+window.addEventListener(
+  "resize",
+  () => {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(onScroll);
+      scrollTicking = true;
     }
   },
   { passive: true }
 );
 
 function setFieldError(field, message) {
+  if (!field) return;
   const wrapper = field.closest(".form-field");
   if (!wrapper) return;
 
   const error = wrapper.querySelector(".error-message");
 
   wrapper.classList.toggle("invalid", Boolean(message));
+  if (message) {
+    field.setAttribute("aria-invalid", "true");
+  } else {
+    field.removeAttribute("aria-invalid");
+  }
   if (error) {
     error.textContent = message;
   }
@@ -210,8 +257,8 @@ function validateContactForm() {
   setFieldError(email, "");
   setFieldError(message, "");
 
-  if (name.value.trim().length < 2) {
-    setFieldError(name, "Please enter your name.");
+  if (message.value.trim().length < 10) {
+    setFieldError(message, "Message should be at least 10 characters.");
     isValid = false;
   }
 
@@ -220,9 +267,16 @@ function validateContactForm() {
     isValid = false;
   }
 
-  if (message.value.trim().length < 10) {
-    setFieldError(message, "Message should be at least 10 characters.");
+  if (name.value.trim().length < 2) {
+    setFieldError(name, "Please enter your name.");
     isValid = false;
+  }
+
+  if (!isValid) {
+    const firstInvalid = contactForm.querySelector(
+      ".form-field.invalid input, .form-field.invalid textarea"
+    );
+    if (firstInvalid) firstInvalid.focus();
   }
 
   return isValid;
@@ -238,6 +292,7 @@ if (contactForm) {
 
     if (!validateContactForm()) {
       status.classList.remove("success");
+      status.classList.add("error");
       status.textContent = "Please fix the highlighted fields.";
       return;
     }
@@ -245,7 +300,7 @@ if (contactForm) {
     submitButton.disabled = true;
     submitButton.classList.add("is-loading");
     if (btnText) btnText.textContent = "Sending...";
-    status.classList.remove("success");
+    status.classList.remove("success", "error");
     status.textContent = "";
 
     try {
@@ -262,10 +317,15 @@ if (contactForm) {
       }
 
       contactForm.reset();
+      setFieldError(contactForm.elements.name, "");
+      setFieldError(contactForm.elements.email, "");
+      setFieldError(contactForm.elements.message, "");
+      status.classList.remove("error");
       status.classList.add("success");
       status.textContent = "Message sent successfully.";
     } catch (error) {
       status.classList.remove("success");
+      status.classList.add("error");
       status.textContent = "Message could not be sent. Please try again.";
     } finally {
       submitButton.disabled = false;
@@ -277,8 +337,11 @@ if (contactForm) {
   contactForm.querySelectorAll("input, textarea").forEach((field) => {
     field.addEventListener("input", () => {
       setFieldError(field, "");
-      contactForm.querySelector(".form-status").classList.remove("success");
-      contactForm.querySelector(".form-status").textContent = "";
+      const status = contactForm.querySelector(".form-status");
+      if (status) {
+        status.classList.remove("success", "error");
+        status.textContent = "";
+      }
     });
   });
 }

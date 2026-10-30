@@ -37,6 +37,8 @@ portfolio/
 ├── script.js
 ├── package.json
 ├── public/
+│   ├── favicon.svg
+│   ├── og-image.png
 │   ├── robots.txt
 │   └── sitemap.xml
 └── README.md
@@ -60,7 +62,6 @@ Create a production build with `npm run build`. Vercel deploys the generated `di
 - Education
 - Certifications
 - Contact
-
 
 ## 🔮 Future Enhancements
 
