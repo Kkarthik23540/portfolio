@@ -1217,6 +1217,11 @@ h3 {
   transform: translateY(-4px) scale(1.08);
 }
 
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+
 .js .reveal {
   opacity: 0;
   transform: translateY(28px);
