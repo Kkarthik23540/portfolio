@@ -135,12 +135,59 @@ function applyTheme(theme, save = true, animated = true) {
 
 updateThemeToggleAccessibility(getActiveTheme());
 
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    const current = getActiveTheme();
-    const next = current === "dark" ? "light" : "dark";
+function toggleTheme(event) {
+  const current = getActiveTheme();
+  const next = current === "dark" ? "light" : "dark";
+
+  if (
+    document.startViewTransition &&
+    !reducedMotion &&
+    window.matchMedia("(prefers-reduced-motion: no-preference)").matches
+  ) {
+    const rect = themeToggle
+      ? themeToggle.getBoundingClientRect()
+      : { left: window.innerWidth - 60, top: 20, width: 40, height: 40 };
+
+    const x = event && typeof event.clientX === "number" && event.clientX > 0
+      ? event.clientX
+      : rect.left + rect.width / 2;
+    const y = event && typeof event.clientY === "number" && event.clientY > 0
+      ? event.clientY
+      : rect.top + rect.height / 2;
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
+      applyTheme(next, true, false);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: clipPath,
+        },
+        {
+          duration: 520,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          pseudoElement: "::view-transition-new(root)",
+        }
+      );
+    });
+  } else {
     applyTheme(next, true, true);
-  });
+  }
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", toggleTheme);
 }
 
 try {
