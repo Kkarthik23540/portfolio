@@ -128,61 +128,20 @@ function applyTheme(theme, save = true) {
 
 updateThemeToggleAccessibility(getActiveTheme());
 
-function triggerThemeRipple(x, y, targetTheme) {
-  if (reducedMotion) return;
-
-  const ripple = document.createElement("div");
-  ripple.className = "theme-ripple";
-
-  const maxDim = Math.max(
-    Math.hypot(x, y),
-    Math.hypot(window.innerWidth - x, y),
-    Math.hypot(x, window.innerHeight - y),
-    Math.hypot(window.innerWidth - x, window.innerHeight - y)
-  );
-  const size = Math.ceil(maxDim * 2.2);
-
-  ripple.style.width = `${size}px`;
-  ripple.style.height = `${size}px`;
-  ripple.style.left = `${x}px`;
-  ripple.style.top = `${y}px`;
-  ripple.style.backgroundColor = targetTheme === "dark" ? "#0b0f17" : "#f7f8fb";
-
-  document.body.appendChild(ripple);
-
-  requestAnimationFrame(() => {
-    ripple.style.transform = "translate(-50%, -50%) scale(1)";
-  });
-
-  window.setTimeout(() => {
-    ripple.classList.add("fade-out");
-    window.setTimeout(() => {
-      ripple.remove();
-    }, 220);
-  }, 260);
-}
-
-function toggleTheme(event) {
-  const current = getActiveTheme();
-  const next = current === "dark" ? "light" : "dark";
-
-  const rect = themeToggle
-    ? themeToggle.getBoundingClientRect()
-    : { left: window.innerWidth - 60, top: 20, width: 40, height: 40 };
-
-  const x = event && typeof event.clientX === "number" && event.clientX > 0
-    ? event.clientX
-    : rect.left + rect.width / 2;
-  const y = event && typeof event.clientY === "number" && event.clientY > 0
-    ? event.clientY
-    : rect.top + rect.height / 2;
-
-  triggerThemeRipple(x, y, next);
-  applyTheme(next, true);
-}
-
 if (themeToggle) {
-  themeToggle.addEventListener("click", toggleTheme);
+  themeToggle.addEventListener("click", () => {
+    themeToggle.classList.remove("theme-animating");
+    void themeToggle.offsetWidth;
+    themeToggle.classList.add("theme-animating");
+
+    const current = getActiveTheme();
+    const next = current === "dark" ? "light" : "dark";
+    applyTheme(next, true);
+
+    window.setTimeout(() => {
+      themeToggle.classList.remove("theme-animating");
+    }, 450);
+  });
 }
 
 try {
