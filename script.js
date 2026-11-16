@@ -1,5 +1,12 @@
 import { inject } from "@vercel/analytics";
 
+try {
+  const storedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", initialTheme);
+} catch (e) {}
+
 document.documentElement.classList.add("js");
 
 inject();
