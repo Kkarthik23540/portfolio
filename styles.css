@@ -24,30 +24,45 @@
   --shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
 }
 
-html.theme-transition,
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-  transition: background-color 0.4s ease,
-              border-color 0.4s ease,
-              color 0.4s ease,
-              box-shadow 0.4s ease !important;
-  transition-delay: 0s !important;
+/* Smooth, hardware-accelerated theme transition on key containers */
+body,
+.site-header,
+.hero,
+.profile-panel,
+.skill-card,
+.project-card,
+.timeline-item,
+.cert-card,
+.contact-section,
+.contact-form,
+.site-footer,
+.theme-toggle,
+.menu-toggle,
+.nav-links,
+.skill-item,
+.tags span,
+.highlight-badge {
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* View Transitions Circular Reveal Ripple */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
+/* Unique GPU-Accelerated Expanding Theme Wave */
+.theme-ripple {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0.96;
+  transition: transform 0.46s cubic-bezier(0.2, 0.9, 0.3, 1),
+              opacity 0.22s ease;
+  will-change: transform, opacity;
 }
 
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 9999;
+.theme-ripple.fade-out {
+  opacity: 0;
 }
 
 * {

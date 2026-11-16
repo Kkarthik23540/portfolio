@@ -115,14 +115,7 @@ function updateThemeToggleAccessibility(theme) {
   themeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
 }
 
-function applyTheme(theme, save = true, animated = true) {
-  if (animated && !reducedMotion) {
-    document.documentElement.classList.add("theme-transition");
-    window.setTimeout(() => {
-      document.documentElement.classList.remove("theme-transition");
-    }, 380);
-  }
-
+function applyTheme(theme, save = true) {
   document.documentElement.setAttribute("data-theme", theme);
   updateThemeToggleAccessibility(theme);
 
@@ -135,55 +128,57 @@ function applyTheme(theme, save = true, animated = true) {
 
 updateThemeToggleAccessibility(getActiveTheme());
 
+function triggerThemeRipple(x, y, targetTheme) {
+  if (reducedMotion) return;
+
+  const ripple = document.createElement("div");
+  ripple.className = "theme-ripple";
+
+  const maxDim = Math.max(
+    Math.hypot(x, y),
+    Math.hypot(window.innerWidth - x, y),
+    Math.hypot(x, window.innerHeight - y),
+    Math.hypot(window.innerWidth - x, window.innerHeight - y)
+  );
+  const size = Math.ceil(maxDim * 2.2);
+
+  ripple.style.width = `${size}px`;
+  ripple.style.height = `${size}px`;
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+  ripple.style.backgroundColor = targetTheme === "dark" ? "#0b0f17" : "#f7f8fb";
+
+  document.body.appendChild(ripple);
+
+  requestAnimationFrame(() => {
+    ripple.style.transform = "translate(-50%, -50%) scale(1)";
+  });
+
+  window.setTimeout(() => {
+    ripple.classList.add("fade-out");
+    window.setTimeout(() => {
+      ripple.remove();
+    }, 220);
+  }, 260);
+}
+
 function toggleTheme(event) {
   const current = getActiveTheme();
   const next = current === "dark" ? "light" : "dark";
 
-  if (
-    document.startViewTransition &&
-    !reducedMotion &&
-    window.matchMedia("(prefers-reduced-motion: no-preference)").matches
-  ) {
-    const rect = themeToggle
-      ? themeToggle.getBoundingClientRect()
-      : { left: window.innerWidth - 60, top: 20, width: 40, height: 40 };
+  const rect = themeToggle
+    ? themeToggle.getBoundingClientRect()
+    : { left: window.innerWidth - 60, top: 20, width: 40, height: 40 };
 
-    const x = event && typeof event.clientX === "number" && event.clientX > 0
-      ? event.clientX
-      : rect.left + rect.width / 2;
-    const y = event && typeof event.clientY === "number" && event.clientY > 0
-      ? event.clientY
-      : rect.top + rect.height / 2;
+  const x = event && typeof event.clientX === "number" && event.clientX > 0
+    ? event.clientX
+    : rect.left + rect.width / 2;
+  const y = event && typeof event.clientY === "number" && event.clientY > 0
+    ? event.clientY
+    : rect.top + rect.height / 2;
 
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    const transition = document.startViewTransition(() => {
-      applyTheme(next, true, false);
-    });
-
-    transition.ready.then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ];
-
-      document.documentElement.animate(
-        {
-          clipPath: clipPath,
-        },
-        {
-          duration: 520,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-          pseudoElement: "::view-transition-new(root)",
-        }
-      );
-    });
-  } else {
-    applyTheme(next, true, true);
-  }
+  triggerThemeRipple(x, y, next);
+  applyTheme(next, true);
 }
 
 if (themeToggle) {
