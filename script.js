@@ -4,6 +4,7 @@ document.documentElement.classList.add("js");
 
 inject();
 
+const themeToggle = document.querySelector("#themeToggle");
 const menuToggle = document.querySelector(".menu-toggle");
 const navLinks = document.querySelector(".nav-links");
 const navItems = document.querySelectorAll(".nav-links a");
@@ -92,6 +93,65 @@ function animateStats() {
 
 runTypewriter();
 updateScrollProgress();
+
+/* --- Theme Toggle & Preferences --- */
+function getActiveTheme() {
+  return document.documentElement.getAttribute("data-theme") || "light";
+}
+
+function updateThemeToggleAccessibility(theme) {
+  if (!themeToggle) return;
+  const isDark = theme === "dark";
+  const label = isDark ? "Switch to light theme" : "Switch to dark theme";
+  themeToggle.setAttribute("aria-label", label);
+  themeToggle.setAttribute("title", label);
+  themeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
+}
+
+function applyTheme(theme, save = true, animated = true) {
+  if (animated && !reducedMotion) {
+    document.documentElement.classList.add("theme-transition");
+    window.setTimeout(() => {
+      document.documentElement.classList.remove("theme-transition");
+    }, 380);
+  }
+
+  document.documentElement.setAttribute("data-theme", theme);
+  updateThemeToggleAccessibility(theme);
+
+  if (save) {
+    try {
+      localStorage.setItem("theme", theme);
+    } catch (e) {}
+  }
+}
+
+updateThemeToggleAccessibility(getActiveTheme());
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current = getActiveTheme();
+    const next = current === "dark" ? "light" : "dark";
+    applyTheme(next, true, true);
+  });
+}
+
+try {
+  const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const handleSystemThemeChange = (e) => {
+    try {
+      if (!localStorage.getItem("theme")) {
+        applyTheme(e.matches ? "dark" : "light", false, true);
+      }
+    } catch (err) {}
+  };
+
+  if (darkModeMediaQuery.addEventListener) {
+    darkModeMediaQuery.addEventListener("change", handleSystemThemeChange);
+  } else if (darkModeMediaQuery.addListener) {
+    darkModeMediaQuery.addListener(handleSystemThemeChange);
+  }
+} catch (e) {}
 
 if (menuToggle && navLinks) {
   function closeMenu() {
