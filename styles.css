@@ -981,7 +981,7 @@ h3 {
 
 .edu-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 22px;
   padding: 24px 28px;
   background: rgba(255, 255, 255, 0.9);
@@ -1005,8 +1005,8 @@ h3 {
 
 /* Integrated Icon */
 .edu-card-icon {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border-radius: 14px;
   background: linear-gradient(135deg, rgba(0, 127, 115, 0.12), rgba(0, 127, 115, 0.04));
   border: 1.5px solid rgba(0, 127, 115, 0.3);
@@ -1030,38 +1030,26 @@ h3 {
   box-shadow: 0 8px 22px rgba(0, 127, 115, 0.3);
 }
 
-.edu-card-body {
+.edu-card-content {
   flex: 1;
   min-width: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
 }
 
-.edu-card-main {
+.edu-card-info {
   flex: 1;
   min-width: 0;
-}
-
-.edu-level-badge {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 3px 10px;
-  border-radius: 6px;
-  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
 }
 
 .edu-title {
   margin: 0 0 5px;
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.28rem;
   font-weight: 700;
   line-height: 1.25;
   color: var(--text);
@@ -1072,7 +1060,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0;
+  margin: 0 0 10px;
   font-family: var(--font-sans);
   font-size: 0.94rem;
   font-weight: 600;
@@ -1085,11 +1073,15 @@ h3 {
   flex-shrink: 0;
 }
 
-/* Meta Badges (Year & Grade) */
-.edu-card-meta {
+/* Grade shown down to college / school name */
+.edu-grade-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+}
+
+/* Year right side of box */
+.edu-card-year {
   flex-shrink: 0;
 }
 
@@ -1217,20 +1209,22 @@ h3 {
 }
 
 .contact-split {
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: 1fr 1fr;
   align-items: flex-start;
-  gap: 56px;
+  gap: 48px;
 }
 
 .contact-form {
   display: grid;
   gap: 16px;
-  padding: 28px 32px;
+  padding: 28px 28px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: 0 16px 40px rgba(23, 32, 51, 0.08);
+  max-width: 480px;
   width: 100%;
+  justify-self: end;
 }
 
 .form-row {
@@ -1529,77 +1523,74 @@ h3 {
   position: fixed;
   right: 24px;
   bottom: 24px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 42px;
-  padding: 0 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 0.84rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1.5px solid rgba(203, 213, 225, 0.85);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--accent);
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(16px);
-  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  transform: translateY(14px) scale(0.92);
+  transition: opacity 0.25s ease,
+              visibility 0.25s ease,
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease,
+              color 0.2s ease;
   z-index: 95;
-  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.back-to-top-icon {
-  display: grid;
-  place-items: center;
-  transition: transform 0.2s ease;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.1);
 }
 
 .back-to-top svg {
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   stroke: currentColor;
   stroke-width: 2.5;
   fill: none;
   display: block;
+  transition: transform 0.22s ease;
 }
 
 .back-to-top.visible {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .back-to-top:hover {
   background: var(--accent);
-  color: white;
+  color: #ffffff;
   border-color: var(--accent);
-  box-shadow: 0 10px 26px rgba(0, 127, 115, 0.35);
-  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(0, 127, 115, 0.38);
+  transform: translateY(-4px) scale(1.08);
 }
 
-.back-to-top:hover .back-to-top-icon {
+.back-to-top:hover svg {
   transform: translateY(-2px);
 }
 
 [data-theme="dark"] .back-to-top {
-  background: rgba(19, 27, 42, 0.92);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #f1f5f9;
+  background: rgba(17, 24, 39, 0.85);
+  border-color: rgba(36, 51, 71, 0.85);
+  color: #2dd4bf;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 [data-theme="dark"] .back-to-top:hover {
-  background: var(--accent);
-  color: #0b0f17;
-  border-color: var(--accent);
-  box-shadow: 0 10px 28px rgba(20, 184, 166, 0.4);
+  background: #2dd4bf;
+  color: #042f2e;
+  border-color: #2dd4bf;
+  box-shadow: 0 10px 30px rgba(45, 212, 191, 0.45);
 }
 
 .reveal {
@@ -2057,29 +2048,23 @@ h3 {
     height: 20px;
   }
 
-  .edu-card-body {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
+  .edu-card-content {
+    flex: 1;
+    min-width: 0;
+    gap: 16px;
   }
 
-  .edu-card-main {
-    min-width: 100%;
+  .edu-card-info {
+    flex: 1;
+    min-width: 0;
   }
 
   .edu-title {
-    font-size: 1.15rem;
+    font-size: 1.18rem;
   }
 
   .edu-school {
     font-size: 0.88rem;
-  }
-
-  .edu-card-meta {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 8px;
-    flex-wrap: wrap;
   }
 
   .edu-badge {
@@ -2114,10 +2099,11 @@ h3 {
   }
 
   .back-to-top {
-    right: 14px;
-    bottom: 14px;
-    height: 38px;
-    padding: 0 12px;
+    right: 16px;
+    bottom: 16px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
     z-index: 95;
   }
@@ -2248,11 +2234,6 @@ h3 {
   .edu-card-icon svg {
     width: 18px;
     height: 18px;
-  }
-
-  .edu-level-badge {
-    font-size: 0.68rem;
-    padding: 2px 8px;
   }
 
   .edu-title {
