@@ -187,12 +187,12 @@ a {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding: 4px 6px;
+  gap: 3px;
+  padding: 5px 8px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  border-radius: 9999px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
   font-family: var(--font-sans);
   color: var(--muted);
   font-size: 0.92rem;
@@ -203,8 +203,8 @@ a {
 
 .nav-links a {
   position: relative;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 7px 16px;
+  border-radius: 9999px;
   color: var(--muted);
   white-space: nowrap;
   transition: color 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s ease;
@@ -212,9 +212,9 @@ a {
 
 .nav-links a::after {
   position: absolute;
-  right: 12px;
+  right: 14px;
   bottom: 4px;
-  left: 12px;
+  left: 14px;
   height: 2px;
   background: var(--accent);
   border-radius: 2px;
@@ -386,24 +386,24 @@ a {
 }
 
 #about {
-  background: radial-gradient(ellipse 90% 55% at 50% 0%, rgba(0, 127, 115, 0.05) 0%, transparent 75%), var(--bg);
+  background: #ffffff;
 }
 
 .section-muted,
 #skills {
-  background: radial-gradient(ellipse 85% 60% at 50% 50%, rgba(235, 241, 248, 0.75) 0%, rgba(247, 248, 251, 0.4) 100%);
+  background: #f1f5f9;
 }
 
 #education {
-  background: radial-gradient(ellipse 90% 55% at 50% 0%, rgba(0, 127, 115, 0.04) 0%, transparent 75%), var(--bg);
+  background: #ffffff;
 }
 
 #projects {
-  background: radial-gradient(ellipse 85% 60% at 50% 50%, rgba(235, 241, 248, 0.75) 0%, rgba(247, 248, 251, 0.4) 100%);
+  background: #f1f5f9;
 }
 
 #certifications {
-  background: radial-gradient(ellipse 90% 55% at 50% 100%, rgba(229, 92, 55, 0.04) 0%, transparent 75%), var(--bg);
+  background: #ffffff;
 }
 
 .hero {
@@ -643,8 +643,7 @@ h3 {
 .profile-panel,
 .project-card,
 .skill-card,
-.education-card,
-.education-step-card,
+.education-item-card,
 .timeline-item,
 .contact-form,
 .cert-card {
@@ -954,155 +953,76 @@ h3 {
   transform: translateY(-2px);
 }
 
-/* Step-by-Step Education Layout */
-.education-steps-timeline {
+/* Education Stack (One by One) */
+.education-stack {
   display: flex;
   flex-direction: column;
-  max-width: 820px;
+  gap: 18px;
+  max-width: 860px;
   margin: 0 auto;
-  position: relative;
 }
 
-.education-step-item {
-  display: flex;
-  gap: 24px;
-  position: relative;
-}
-
-.step-indicator-track {
+.education-item-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 48px;
-  flex-shrink: 0;
-  position: relative;
-}
-
-.step-node-badge {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  font-weight: 800;
-  box-shadow: 0 4px 14px rgba(0, 127, 115, 0.18);
-  z-index: 2;
-  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
-}
-
-.education-step-item:hover .step-node-badge {
-  transform: scale(1.08);
-  background: var(--accent);
-  color: white;
-}
-
-.step-node-badge.step-node-final {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-  border-color: transparent;
-  color: white;
-  box-shadow: 0 4px 16px rgba(0, 127, 115, 0.35);
-}
-
-.step-track-line {
-  flex: 1;
-  width: 3px;
-  min-height: 40px;
-  background: linear-gradient(180deg, var(--accent) 0%, rgba(0, 127, 115, 0.2) 100%);
-  margin: 8px 0;
-  border-radius: 2px;
-}
-
-.education-step-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  gap: 14px;
   padding: 24px 28px;
-  margin-bottom: 28px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--surface);
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.28s ease;
-  position: relative;
 }
 
-.education-step-card:hover {
+.education-item-card:hover {
   transform: translateY(-3px);
   border-color: rgba(0, 127, 115, 0.45);
-  box-shadow: 0 16px 36px rgba(0, 127, 115, 0.12);
+  box-shadow: 0 14px 32px rgba(0, 127, 115, 0.12);
 }
 
-.step-label {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  margin-bottom: 4px;
-}
-
-.education-card-content {
+.education-item-header {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
-  margin: 10px 0 16px;
-}
-
-.step-progression-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding-top: 14px;
-  border-top: 1px dashed var(--line);
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-.step-progression-hint svg {
-  color: var(--accent);
-}
-
-.step-progression-hint.completed {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.education-card {
-  display: flex;
-  flex-direction: column;
-  padding: 26px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
-  position: relative;
-}
-
-.education-card:hover {
-  border-color: rgba(0, 127, 115, 0.45);
-  box-shadow: 0 20px 42px rgba(0, 127, 115, 0.14);
-  transform: translateY(-5px);
-}
-
-.education-card-top {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 16px;
   flex-wrap: wrap;
+}
+
+.education-item-title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.education-item-title-group h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.education-item-title-group .education-school {
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.education-item-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.education-desc {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--muted);
 }
 
 .education-icon-wrap {
@@ -1113,7 +1033,7 @@ h3 {
   border-radius: 10px;
   background: var(--accent-soft);
   color: var(--accent);
-  margin-bottom: 16px;
+  margin-bottom: 0;
   flex-shrink: 0;
 }
 
@@ -1243,7 +1163,7 @@ h3 {
 
 .contact-section {
   padding: 80px 0;
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(0, 127, 115, 0.05) 30%, rgba(0, 127, 115, 0.08) 100%);
+  background: #edf2f7;
   color: var(--text);
 }
 
@@ -1734,24 +1654,24 @@ h3 {
 }
 
 [data-theme="dark"] #about {
-  background: radial-gradient(ellipse 90% 55% at 50% 0%, rgba(20, 184, 166, 0.07) 0%, transparent 75%), #0b0f17;
+  background: #0e1626;
 }
 
 [data-theme="dark"] .section-muted,
 [data-theme="dark"] #skills {
-  background: radial-gradient(ellipse 85% 60% at 50% 50%, rgba(17, 25, 40, 0.7) 0%, #0b0f17 100%);
+  background: #080d17;
 }
 
 [data-theme="dark"] #education {
-  background: radial-gradient(ellipse 90% 55% at 50% 0%, rgba(20, 184, 166, 0.06) 0%, transparent 75%), #0b0f17;
+  background: #0e1626;
 }
 
 [data-theme="dark"] #projects {
-  background: radial-gradient(ellipse 85% 60% at 50% 50%, rgba(17, 25, 40, 0.7) 0%, #0b0f17 100%);
+  background: #080d17;
 }
 
 [data-theme="dark"] #certifications {
-  background: radial-gradient(ellipse 90% 55% at 50% 100%, rgba(251, 146, 60, 0.05) 0%, transparent 75%), #0b0f17;
+  background: #0e1626;
 }
 
 [data-theme="dark"] .quick-stats div:hover {
@@ -1825,7 +1745,7 @@ h3 {
 }
 
 [data-theme="dark"] .contact-section {
-  background: linear-gradient(180deg, #0b0f17 0%, rgba(20, 184, 166, 0.08) 35%, rgba(15, 23, 42, 0.95) 100%);
+  background: #0a111c;
   color: var(--text);
 }
 
@@ -1900,51 +1820,15 @@ h3 {
   color: #f1f5f9;
 }
 
-[data-theme="dark"] .step-node-badge {
-  background: #111827;
-  border-color: #2dd4bf;
-  color: #2dd4bf;
-  box-shadow: 0 4px 14px rgba(45, 212, 191, 0.2);
-}
-
-[data-theme="dark"] .education-step-item:hover .step-node-badge {
-  background: #2dd4bf;
-  color: #0b0f17;
-}
-
-[data-theme="dark"] .step-node-badge.step-node-final {
-  background: linear-gradient(135deg, #2dd4bf 0%, #fb923c 100%);
-  color: #0b0f17;
-  border-color: transparent;
-  box-shadow: 0 4px 20px rgba(45, 212, 191, 0.4);
-}
-
-[data-theme="dark"] .step-track-line {
-  background: linear-gradient(180deg, #2dd4bf 0%, rgba(45, 212, 191, 0.2) 100%);
-}
-
-[data-theme="dark"] .education-step-card {
+[data-theme="dark"] .education-item-card {
   background: #111827;
   border-color: #243347;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
 }
 
-[data-theme="dark"] .education-step-card:hover {
+[data-theme="dark"] .education-item-card:hover {
   border-color: rgba(45, 212, 191, 0.45);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(45, 212, 191, 0.12);
-}
-
-[data-theme="dark"] .step-label {
-  color: #2dd4bf;
-}
-
-[data-theme="dark"] .step-progression-hint {
-  border-top-color: #243347;
-  color: #94a3b8;
-}
-
-[data-theme="dark"] .step-progression-hint.completed {
-  color: #2dd4bf;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2070,33 +1954,23 @@ h3 {
     padding: 52px 0;
   }
 
-  .education-step-item {
-    gap: 14px;
-  }
-
-  .step-indicator-track {
-    width: 36px;
-  }
-
-  .step-node-badge {
-    width: 38px;
-    height: 38px;
-    font-size: 0.85rem;
-    border-radius: 10px;
-  }
-
-  .education-step-card {
+  .education-item-card {
     padding: 18px 20px;
-    margin-bottom: 22px;
-  }
-
-  .education-card-content {
     gap: 12px;
   }
 
-  .education-icon-wrap {
-    width: 38px;
-    height: 38px;
+  .education-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .education-item-title-group {
+    gap: 12px;
+  }
+
+  .education-item-title-group h3 {
+    font-size: 1.12rem;
   }
 
   .contact-section {
