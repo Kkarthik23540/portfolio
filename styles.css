@@ -1009,25 +1009,12 @@ h3 {
   height: 50px;
   border-radius: 14px;
   background: linear-gradient(135deg, rgba(0, 127, 115, 0.12), rgba(0, 127, 115, 0.04));
-  border: 1.5px solid rgba(0, 127, 115, 0.3);
+  border: 1.5px solid rgba(0, 127, 115, 0.25);
   display: grid;
   place-items: center;
   color: var(--accent);
-  box-shadow: 0 4px 14px rgba(0, 127, 115, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 127, 115, 0.06);
   flex-shrink: 0;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              background 0.3s ease,
-              color 0.3s ease,
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
-}
-
-.edu-card:hover .edu-card-icon {
-  transform: scale(1.08) translateY(-2px);
-  background: var(--accent);
-  color: #ffffff;
-  border-color: var(--accent);
-  box-shadow: 0 8px 22px rgba(0, 127, 115, 0.3);
 }
 
 .edu-card-content {
@@ -1105,15 +1092,10 @@ h3 {
   border: 1px solid rgba(15, 23, 42, 0.1);
 }
 
-.edu-grade-badge {
-  background: rgba(37, 99, 235, 0.08);
-  color: #2563eb;
-  border: 1px solid rgba(37, 99, 235, 0.22);
-}
-
+.edu-grade-badge,
 .edu-grade-badge.grade-distinction {
   background: rgba(16, 185, 129, 0.1);
-  color: #059669;
+  color: #047857;
   border: 1px solid rgba(16, 185, 129, 0.28);
 }
 
@@ -1877,16 +1859,13 @@ h3 {
 
 [data-theme="dark"] .edu-card-icon {
   background: rgba(45, 212, 191, 0.1);
-  border-color: rgba(45, 212, 191, 0.3);
+  border-color: rgba(45, 212, 191, 0.25);
   color: #2dd4bf;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .edu-card:hover .edu-card-icon {
-  background: #2dd4bf;
-  color: #042f2e;
-  border-color: #2dd4bf;
-  box-shadow: 0 0 24px rgba(45, 212, 191, 0.5);
+[data-theme="dark"] .edu-school {
+  color: #cbd5e1;
 }
 
 [data-theme="dark"] .edu-year-badge {
@@ -1895,12 +1874,7 @@ h3 {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-[data-theme="dark"] .edu-grade-badge {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border-color: rgba(59, 130, 246, 0.3);
-}
-
+[data-theme="dark"] .edu-grade-badge,
 [data-theme="dark"] .edu-grade-badge.grade-distinction {
   background: rgba(16, 185, 129, 0.18);
   color: #34d399;
