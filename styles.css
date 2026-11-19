@@ -1,4 +1,7 @@
 :root {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --bg: #f7f8fb;
   --surface: #ffffff;
   --surface-strong: #101828;
@@ -65,8 +68,17 @@ body,
               box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
 }
 
 html {
@@ -80,11 +92,14 @@ section[id] {
 
 body {
   margin: 0;
-  font-family: Inter, Arial, sans-serif;
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -146,7 +161,9 @@ a {
 
 .brand {
   gap: 10px;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .brand-mark {
@@ -157,7 +174,9 @@ a {
   border-radius: 8px;
   background: var(--surface-strong);
   color: white;
-  letter-spacing: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
 
@@ -168,9 +187,11 @@ a {
 
 .nav-links {
   gap: 22px;
+  font-family: var(--font-sans);
   color: var(--muted);
   font-size: 0.95rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .nav-links a {
@@ -437,9 +458,10 @@ a {
 
 .eyebrow {
   margin: 0 0 10px;
+  font-family: var(--font-mono);
   color: var(--accent);
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -451,30 +473,42 @@ p {
   margin-top: 0;
 }
 
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
 h1 {
   max-width: 760px;
   margin-bottom: 18px;
   font-size: clamp(2.75rem, 5vw, 4.5rem);
-  line-height: 1.04;
-  letter-spacing: 0;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 700;
 }
 
 h2 {
   margin-bottom: 18px;
   font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.16;
-  letter-spacing: 0;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 700;
 }
 
 h3 {
   margin-bottom: 10px;
   font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  font-weight: 600;
 }
 
 .hero-text {
   max-width: 650px;
   color: var(--muted);
   font-size: 1.15rem;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
 }
 
 .availability-badge {
@@ -483,13 +517,15 @@ h3 {
   width: fit-content;
   gap: 8px;
   margin: 0 0 18px;
-  padding: 7px 11px;
+  padding: 7px 12px;
   border: 1px solid rgba(0, 127, 115, 0.2);
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent);
-  font-size: 0.86rem;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .availability-badge span {
@@ -519,7 +555,9 @@ h3 {
   padding: 0 22px;
   border: 1px solid transparent;
   border-radius: 8px;
-  font-weight: 800;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.01em;
   cursor: pointer;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
@@ -668,9 +706,20 @@ h3 {
   display: block;
 }
 
+.quick-stats strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
 .quick-stats span {
+  font-family: var(--font-mono);
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  margin-top: 3px;
 }
 
 .section-heading {
@@ -761,8 +810,10 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 6px;
   background: #fcfdfe;
+  font-family: var(--font-sans);
   font-size: 0.86rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text);
   transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -827,8 +878,9 @@ h3 {
   align-items: center;
   padding: 5px 12px;
   border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   line-height: 1;
@@ -873,8 +925,10 @@ h3 {
   border-radius: 999px;
   background: #fff1ec;
   color: var(--accent-2);
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -924,8 +978,10 @@ h3 {
   gap: 6px;
   padding: 5px 12px;
   border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1;
 }
 
@@ -998,8 +1054,9 @@ h3 {
   background: #f0f4ff;
   color: #3b5bdb;
   border: 1px solid rgba(59, 91, 219, 0.22);
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   line-height: 1;
@@ -1007,14 +1064,17 @@ h3 {
 
 .cert-card h3 {
   margin: 0 0 6px;
+  font-family: var(--font-display);
   font-size: 1.22rem;
   line-height: 1.3;
 }
 
 .cert-issuer {
   color: var(--accent);
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: 600;
   font-size: 0.92rem;
+  letter-spacing: -0.01em;
   margin: 0 0 10px;
 }
 
@@ -1058,20 +1118,23 @@ h3 {
 }
 
 .form-field label {
+  font-family: var(--font-sans);
   color: var(--text);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.88rem;
+  letter-spacing: -0.01em;
 }
 
 .form-field input,
 .form-field textarea {
   width: 100%;
+  font-family: var(--font-sans);
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--bg);
   color: var(--text);
-  font: inherit;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
+  letter-spacing: -0.01em;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
@@ -1089,8 +1152,10 @@ h3 {
 
 .form-field input::placeholder,
 .form-field textarea::placeholder {
+  font-family: var(--font-sans);
   color: var(--muted);
   opacity: 0.8;
+  letter-spacing: -0.01em;
 }
 
 .form-field input:focus,
@@ -1113,8 +1178,10 @@ h3 {
 
 .error-message {
   min-height: 0;
+  font-family: var(--font-sans);
   font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--error);
   line-height: 1.35;
   margin-top: 4px;
@@ -1165,7 +1232,10 @@ h3 {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  font-family: var(--font-sans);
   font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   margin-top: 4px;
 }
 
@@ -1217,8 +1287,10 @@ h3 {
   gap: 10px;
   padding: 10px 14px;
   border-radius: 8px;
+  font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
   line-height: 1.4;
   margin-top: 6px;
 }
