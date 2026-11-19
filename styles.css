@@ -400,7 +400,10 @@ a {
 }
 
 #education {
-  background: #ffffff;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(0, 127, 115, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 88% 75%, rgba(37, 99, 235, 0.04) 0%, transparent 45%),
+    #ffffff;
 }
 
 #projects {
@@ -648,7 +651,7 @@ h3 {
 .profile-panel,
 .project-card,
 .skill-card,
-.education-item-card,
+.edu-journey-card,
 .timeline-item,
 .contact-form,
 .cert-card {
@@ -965,120 +968,310 @@ h3 {
   transform: translateY(-2px);
 }
 
-/* Education Stack (One by One) */
-.education-stack {
+/* ==========================================================================
+   Education Journey (Step-by-Step Interactive Timeline)
+   ========================================================================== */
+.education-journey {
+  max-width: 860px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 880px;
-  margin: 0 auto;
+  position: relative;
 }
 
-.education-item-card {
+.edu-journey-step {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px 24px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface);
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.28s ease;
+  align-items: stretch;
+  gap: 22px;
+  position: relative;
+  margin-bottom: 24px;
 }
 
-.education-item-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0, 127, 115, 0.45);
-  box-shadow: 0 12px 28px rgba(0, 127, 115, 0.12);
-}
-
-.education-item-title-group {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  min-width: 0;
-}
-
-.education-item-title-group h3 {
-  margin: 0 0 3px;
-  font-family: var(--font-display);
-  font-size: 1.22rem;
-  line-height: 1.25;
-}
-
-.education-item-title-group .education-school {
-  color: var(--accent);
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 0.92rem;
-  letter-spacing: -0.01em;
-  margin: 0;
-  line-height: 1.35;
-}
-
-.education-item-badges {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.education-icon-wrap {
-  display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--accent);
+.edu-journey-step.edu-step-final {
   margin-bottom: 0;
-  flex-shrink: 0;
 }
 
-.education-card h3 {
-  margin: 0 0 8px;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  line-height: 1.3;
-}
-
-.education-school {
-  color: var(--accent);
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 0.92rem;
-  letter-spacing: -0.01em;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.highlight-badge {
-  display: inline-flex;
+/* Milestone Indicator Node on Left */
+.edu-step-indicator {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
+  flex-shrink: 0;
+  width: 58px;
+}
+
+.edu-step-node {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(0, 127, 115, 0.12), rgba(0, 127, 115, 0.04));
+  border: 1.5px solid rgba(0, 127, 115, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  box-shadow: 0 4px 14px rgba(0, 127, 115, 0.1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease,
+              background 0.3s ease,
+              color 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.edu-step-number {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.edu-step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
 }
 
-.highlight-badge.year-badge {
-  background: var(--accent-soft);
-  color: var(--accent);
-  border: 1px solid rgba(0, 127, 115, 0.2);
+.edu-step-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
-.highlight-badge.grade-badge {
+/* Continuous Trail Spine connecting Nodes */
+.edu-step-trail {
+  width: 2px;
+  flex: 1;
+  min-height: 48px;
+  background: linear-gradient(to bottom, rgba(0, 127, 115, 0.45), rgba(0, 127, 115, 0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 6px 0 -24px 0;
+  z-index: 1;
+}
+
+.edu-step-final .edu-step-trail {
+  min-height: 28px;
+  margin-bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 127, 115, 0.45), transparent);
+}
+
+.edu-trail-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid rgba(0, 127, 115, 0.35);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 3px 10px rgba(0, 127, 115, 0.15);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+  animation: eduArrowPulse 2.4s ease-in-out infinite;
+}
+
+.edu-trail-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(0, 127, 115, 0.5);
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+@keyframes eduArrowPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    transform: translate(-50%, calc(-50% + 3px));
+  }
+}
+
+/* Hover effect connecting node and card */
+.edu-journey-step:hover .edu-step-node {
+  transform: scale(1.08) translateY(-2px);
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 127, 115, 0.35);
+}
+
+.edu-journey-step:hover .edu-trail-arrow {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(0, 127, 115, 0.4);
+}
+
+/* Main Education Journey Card */
+.edu-journey-card {
+  flex: 1;
+  min-width: 0;
+  padding: 22px 26px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-left: 4px solid var(--accent);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.edu-journey-card:hover {
+  transform: translateY(-4px) translateX(3px);
+  border-color: rgba(0, 127, 115, 0.45);
+  border-left-color: var(--accent);
+  box-shadow: 0 16px 36px rgba(0, 127, 115, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Card Header */
+.edu-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.edu-header-main {
+  flex: 1;
+  min-width: 240px;
+}
+
+.edu-level-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.edu-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.edu-school {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.edu-school svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Meta Badges (Year & Grade) */
+.edu-meta-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.edu-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.edu-year-badge {
+  background: rgba(15, 23, 42, 0.04);
+  color: var(--text);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.edu-grade-badge {
   background: rgba(37, 99, 235, 0.08);
   color: #2563eb;
   border: 1px solid rgba(37, 99, 235, 0.22);
+}
+
+.edu-grade-badge.grade-distinction {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+/* Card Footer / Specialization pills */
+.edu-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(203, 213, 225, 0.8);
+}
+
+.edu-specialization {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.edu-spec-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border-radius: 6px;
+  font-family: var(--font-sans);
   font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: rgba(241, 245, 249, 0.85);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  letter-spacing: -0.01em;
 }
 
 .cert-grid {
@@ -1827,15 +2020,85 @@ h3 {
   color: #f1f5f9;
 }
 
-[data-theme="dark"] .education-item-card {
-  background: #111827;
-  border-color: #243347;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
+[data-theme="dark"] .edu-journey-card {
+  background: rgba(17, 24, 39, 0.85);
+  border-color: rgba(36, 51, 71, 0.85);
+  border-left-color: #2dd4bf;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
-[data-theme="dark"] .education-item-card:hover {
+[data-theme="dark"] .edu-journey-card:hover {
   border-color: rgba(45, 212, 191, 0.45);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(45, 212, 191, 0.12);
+  border-left-color: #2dd4bf;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(45, 212, 191, 0.12);
+}
+
+[data-theme="dark"] .edu-step-node {
+  background: rgba(45, 212, 191, 0.1);
+  border-color: rgba(45, 212, 191, 0.3);
+  color: #2dd4bf;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .edu-journey-step:hover .edu-step-node {
+  background: #2dd4bf;
+  color: #042f2e;
+  border-color: #2dd4bf;
+  box-shadow: 0 0 24px rgba(45, 212, 191, 0.5);
+}
+
+[data-theme="dark"] .edu-step-trail {
+  background: linear-gradient(to bottom, rgba(45, 212, 191, 0.45), rgba(45, 212, 191, 0.15));
+}
+
+[data-theme="dark"] .edu-step-final .edu-step-trail {
+  background: linear-gradient(to bottom, rgba(45, 212, 191, 0.45), transparent);
+}
+
+[data-theme="dark"] .edu-trail-arrow {
+  background: #111827;
+  border-color: rgba(45, 212, 191, 0.35);
+  color: #2dd4bf;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .edu-trail-dot {
+  background: #2dd4bf;
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.6);
+}
+
+[data-theme="dark"] .edu-journey-step:hover .edu-trail-arrow {
+  background: #2dd4bf;
+  color: #042f2e;
+  border-color: #2dd4bf;
+}
+
+[data-theme="dark"] .edu-year-badge {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .edu-grade-badge {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="dark"] .edu-grade-badge.grade-distinction {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="dark"] .edu-card-footer {
+  border-top-color: rgba(51, 65, 85, 0.6);
+}
+
+[data-theme="dark"] .edu-spec-pill {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(51, 65, 85, 0.7);
+  color: #94a3b8;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1852,7 +2115,8 @@ h3 {
   .hero-bg-glow-2,
   .avatar,
   .availability-badge span,
-  .btn.primary::after {
+  .btn.primary::after,
+  .edu-flow-arrow {
     animation: none !important;
   }
 }
@@ -1961,24 +2225,80 @@ h3 {
     padding: 52px 0;
   }
 
-  .education-item-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 18px 20px;
+  /* Education Journey Responsive */
+  .edu-journey-step {
+    gap: 16px;
   }
 
-  .education-item-title-group {
+  .edu-step-indicator {
+    width: 48px;
+  }
+
+  .edu-step-node {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .edu-step-number {
+    font-size: 0.62rem;
+  }
+
+  .edu-step-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .edu-step-trail {
+    margin-bottom: -24px;
+  }
+
+  .edu-trail-arrow {
+    width: 25px;
+    height: 25px;
+  }
+
+  .edu-trail-arrow svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .edu-journey-card {
+    padding: 18px 20px;
     gap: 12px;
   }
 
-  .education-item-title-group h3 {
-    font-size: 1.12rem;
+  .edu-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 
-  .education-item-badges {
-    align-self: flex-start;
-    padding-left: 56px;
+  .edu-header-main {
+    min-width: 100%;
+  }
+
+  .edu-title {
+    font-size: 1.14rem;
+  }
+
+  .edu-school {
+    font-size: 0.88rem;
+  }
+
+  .edu-meta-badges {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .edu-badge {
+    padding: 5px 12px;
+    font-size: 0.78rem;
+  }
+
+  .edu-spec-pill {
+    font-size: 0.78rem;
+    padding: 3px 9px;
   }
 
   .contact-section {
@@ -2125,6 +2445,52 @@ h3 {
 
   .contact-form {
     padding: 20px 16px;
+  }
+
+  .edu-journey-step {
+    gap: 12px;
+  }
+
+  .edu-step-indicator {
+    width: 38px;
+  }
+
+  .edu-step-node {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .edu-step-number {
+    display: none;
+  }
+
+  .edu-step-trail {
+    min-height: 38px;
+    margin-bottom: -20px;
+  }
+
+  .edu-trail-arrow {
+    width: 24px;
+    height: 24px;
+  }
+
+  .edu-trail-arrow svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .edu-journey-card {
+    padding: 16px 14px;
+    border-left-width: 3.5px;
+  }
+
+  .edu-title {
+    font-size: 1.08rem;
+  }
+
+  .edu-card-footer {
+    padding-top: 10px;
   }
 
   .timeline-header {
