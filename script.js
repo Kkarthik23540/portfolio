@@ -350,6 +350,33 @@ function validateContactForm() {
   return isValid;
 }
 
+let formStatusTimeout = null;
+
+function setFormStatus(statusEl, type, message, autoClearMs = 0) {
+  if (!statusEl) return;
+  if (formStatusTimeout) {
+    clearTimeout(formStatusTimeout);
+    formStatusTimeout = null;
+  }
+  statusEl.classList.remove("success", "error", "fade-out");
+  statusEl.textContent = message;
+
+  if (type) {
+    statusEl.classList.add(type);
+  }
+
+  if (autoClearMs > 0) {
+    formStatusTimeout = window.setTimeout(() => {
+      statusEl.classList.add("fade-out");
+      formStatusTimeout = window.setTimeout(() => {
+        statusEl.classList.remove("success", "error", "fade-out");
+        statusEl.textContent = "";
+        formStatusTimeout = null;
+      }, 400);
+    }, autoClearMs);
+  }
+}
+
 if (contactForm) {
   contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -359,17 +386,14 @@ if (contactForm) {
     const btnText = submitButton ? submitButton.querySelector(".btn-text") : null;
 
     if (!validateContactForm()) {
-      status.classList.remove("success");
-      status.classList.add("error");
-      status.textContent = "Please fix the highlighted fields.";
+      setFormStatus(status, "error", "Please fix the highlighted fields.", 5000);
       return;
     }
 
     submitButton.disabled = true;
     submitButton.classList.add("is-loading");
     if (btnText) btnText.textContent = "Sending...";
-    status.classList.remove("success", "error");
-    status.textContent = "";
+    setFormStatus(status, "", "");
 
     try {
       const response = await fetch(contactForm.action, {
@@ -388,13 +412,9 @@ if (contactForm) {
       setFieldError(contactForm.elements.name, "");
       setFieldError(contactForm.elements.email, "");
       setFieldError(contactForm.elements.message, "");
-      status.classList.remove("error");
-      status.classList.add("success");
-      status.textContent = "Message sent successfully.";
+      setFormStatus(status, "success", "Message sent successfully.", 4500);
     } catch (error) {
-      status.classList.remove("success");
-      status.classList.add("error");
-      status.textContent = "Message could not be sent. Please try again.";
+      setFormStatus(status, "error", "Message could not be sent. Please try again.", 6000);
     } finally {
       submitButton.disabled = false;
       submitButton.classList.remove("is-loading");
@@ -407,8 +427,7 @@ if (contactForm) {
       setFieldError(field, "");
       const status = contactForm.querySelector(".form-status");
       if (status) {
-        status.classList.remove("success", "error");
-        status.textContent = "";
+        setFormStatus(status, "", "");
       }
     });
   });

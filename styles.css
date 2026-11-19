@@ -1154,6 +1154,12 @@ h3 {
   margin: 0;
   color: var(--accent);
   font-weight: 700;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.form-status.fade-out {
+  opacity: 0;
 }
 
 .form-status.error {
