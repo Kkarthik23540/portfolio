@@ -386,7 +386,7 @@ if (contactForm) {
     const btnText = submitButton ? submitButton.querySelector(".btn-text") : null;
 
     if (!validateContactForm()) {
-      setFormStatus(status, "error", "Please fix the highlighted fields.", 5000);
+      setFormStatus(status, "error", "Please fill in all required fields.", 4500);
       return;
     }
 
