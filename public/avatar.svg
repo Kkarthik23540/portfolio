@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="60%" stop-color="#003e38" />
+      <stop offset="100%" stop-color="#007f73" />
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8c99e" />
+      <stop offset="100%" stop-color="#de9f70" />
+    </linearGradient>
+    <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b18" />
+      <stop offset="100%" stop-color="#0c0a09" />
+    </linearGradient>
+    <linearGradient id="clothGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#134e4a" />
+      <stop offset="100%" stop-color="#042f2e" />
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="240" height="240" rx="32" fill="url(#bgGrad)" />
+
+  <!-- Subtle Cyber Tech Grid Pattern -->
+  <circle cx="120" cy="120" r="105" fill="none" stroke="rgba(20, 184, 166, 0.25)" stroke-width="1.5" stroke-dasharray="4 6" />
+  <circle cx="120" cy="120" r="88" fill="none" stroke="rgba(20, 184, 166, 0.15)" stroke-width="1" />
+
+  <!-- Developer Silhouette / Torso -->
+  <!-- Shoulders / Jacket -->
+  <path d="M40 240 C44 195 72 170 120 170 C168 170 196 195 200 240 Z" fill="url(#clothGrad)" />
+  <!-- Inner T-shirt collar -->
+  <path d="M96 170 C96 192 144 192 144 170 Z" fill="#0f172a" />
+  <!-- Collar Accent -->
+  <path d="M92 170 L120 205 L148 170" fill="none" stroke="#14b8a6" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Neck -->
+  <rect x="105" y="132" width="30" height="42" rx="6" fill="url(#skinGrad)" />
+
+  <!-- Head Base -->
+  <path d="M78 108 C78 70 96 55 120 55 C144 55 162 70 162 108 C162 144 144 158 120 158 C96 158 78 144 78 108 Z" fill="url(#skinGrad)" />
+
+  <!-- Ears -->
+  <circle cx="76" cy="110" r="10" fill="#de9f70" />
+  <circle cx="164" cy="110" r="10" fill="#de9f70" />
+
+  <!-- Modern Hair -->
+  <path d="M72 92 C70 56 94 40 120 40 C146 40 168 52 168 86 C168 96 164 104 162 108 C156 90 148 76 122 76 C98 76 86 86 78 100 C74 98 72 95 72 92 Z" fill="url(#hairGrad)" />
+  <!-- Hair volume top spikes/curls -->
+  <path d="M90 48 C105 34 135 34 150 44 C158 50 162 60 160 62 C154 52 142 46 126 46 C110 46 98 52 90 48 Z" fill="#292524" />
+
+  <!-- Stylish Glasses (Cyber / Dev Vibe) -->
+  <rect x="88" y="98" width="26" height="18" rx="4" fill="rgba(15, 23, 42, 0.4)" stroke="#14b8a6" stroke-width="2.5" />
+  <rect x="126" y="98" width="26" height="18" rx="4" fill="rgba(15, 23, 42, 0.4)" stroke="#14b8a6" stroke-width="2.5" />
+  <line x1="114" y1="106" x2="126" y2="106" stroke="#14b8a6" stroke-width="2.5" />
+  <line x1="77" y1="104" x2="88" y2="104" stroke="#14b8a6" stroke-width="2" />
+  <line x1="152" y1="104" x2="163" y2="104" stroke="#14b8a6" stroke-width="2" />
+
+  <!-- Eyes reflection inside glasses -->
+  <circle cx="101" cy="107" r="2.5" fill="#ffffff" />
+  <circle cx="139" cy="107" r="2.5" fill="#ffffff" />
+
+  <!-- Nose -->
+  <path d="M118 116 L116 126 L124 126" fill="none" stroke="#c27c52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Confident Smile -->
+  <path d="M108 138 Q120 146 132 138" fill="none" stroke="#262626" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Tech Code Bracket Badges -->
+  <g transform="translate(18, 20) scale(0.85)">
+    <circle cx="12" cy="12" r="16" fill="rgba(0, 127, 115, 0.35)" />
+    <path d="M8 8 L4 12 L8 16 M16 8 L20 12 L16 16" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
