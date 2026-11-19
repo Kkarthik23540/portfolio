@@ -47,7 +47,6 @@ body,
 .project-card,
 .project-card h3,
 .project-card p,
-.timeline-item,
 .cert-card,
 .contact-section,
 .contact-form,
@@ -60,7 +59,6 @@ body,
 .nav-links,
 .skill-item,
 .tags span,
-.highlight-badge,
 .quick-stats div {
   transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
               border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -666,8 +664,6 @@ h3 {
 .profile-panel,
 .project-card,
 .skill-card,
-.edu-card,
-.timeline-item,
 .contact-form,
 .cert-card {
   border: 1px solid var(--line);
@@ -889,7 +885,6 @@ h3 {
 .skill-card p,
 .project-card p,
 .project-card li,
-.timeline-item p,
 .cert-card p {
   color: var(--muted);
 }
@@ -1107,8 +1102,7 @@ h3 {
   border: 1px solid rgba(15, 23, 42, 0.1);
 }
 
-.edu-grade-badge,
-.edu-grade-badge.grade-distinction {
+.edu-grade-badge {
   background: rgba(16, 185, 129, 0.1);
   color: #047857;
   border: 1px solid rgba(16, 185, 129, 0.28);
@@ -1619,9 +1613,9 @@ h3 {
 .projects-grid .reveal:nth-child(2) { transition-delay: 0.16s; }
 .projects-grid .reveal:nth-child(3) { transition-delay: 0.26s; }
 
-.timeline .reveal:nth-child(1) { transition-delay: 0.05s; }
-.timeline .reveal:nth-child(2) { transition-delay: 0.15s; }
-.timeline .reveal:nth-child(3) { transition-delay: 0.25s; }
+.education-cards .reveal:nth-child(1) { transition-delay: 0.05s; }
+.education-cards .reveal:nth-child(2) { transition-delay: 0.15s; }
+.education-cards .reveal:nth-child(3) { transition-delay: 0.25s; }
 
 .cert-grid .reveal:nth-child(1) { transition-delay: 0.05s; }
 .cert-grid .reveal:nth-child(2) { transition-delay: 0.15s; }
@@ -1715,7 +1709,6 @@ h3 {
 
 [data-theme="dark"] .skill-card:hover,
 [data-theme="dark"] .project-card:hover,
-[data-theme="dark"] .timeline-item:hover,
 [data-theme="dark"] .cert-card:hover,
 [data-theme="dark"] .profile-panel:hover {
   border-color: rgba(20, 184, 166, 0.45);
@@ -1749,18 +1742,6 @@ h3 {
 [data-theme="dark"] .tags span:hover {
   background: var(--accent);
   color: #0b0f17;
-}
-
-[data-theme="dark"] .highlight-badge.year-badge {
-  background: rgba(20, 184, 166, 0.12);
-  color: #2dd4bf;
-  border-color: rgba(20, 184, 166, 0.28);
-}
-
-[data-theme="dark"] .highlight-badge.grade-badge {
-  background: rgba(20, 184, 166, 0.16);
-  color: #2dd4bf;
-  border-color: rgba(20, 184, 166, 0.35);
 }
 
 [data-theme="dark"] .cert-badge {
@@ -1911,8 +1892,7 @@ h3 {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-[data-theme="dark"] .edu-grade-badge,
-[data-theme="dark"] .edu-grade-badge.grade-distinction {
+[data-theme="dark"] .edu-grade-badge {
   background: rgba(16, 185, 129, 0.18);
   color: #34d399;
   border-color: rgba(16, 185, 129, 0.35);
@@ -1930,7 +1910,6 @@ h3 {
 
   .hero-bg-glow-1,
   .hero-bg-glow-2,
-  .avatar,
   .availability-badge span,
   .btn.primary::after {
     animation: none !important;
@@ -2211,7 +2190,6 @@ h3 {
   .profile-panel,
   .project-card,
   .skill-card,
-  .timeline-item,
   .cert-card {
     padding: 18px 16px;
   }
@@ -2251,11 +2229,6 @@ h3 {
     font-size: 1.08rem;
   }
 
-  .timeline-header {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
   .hero.section,
   .hero {
     padding-top: 20px;
@@ -2268,13 +2241,6 @@ h3 {
 
   .contact-section {
     padding: 36px 0;
-  }
-
-  .avatar {
-    width: 90px;
-    height: 90px;
-    font-size: 1.9rem;
-    margin-bottom: 16px;
   }
 }
 
@@ -2294,12 +2260,6 @@ h3 {
   .hero-actions .btn {
     padding: 0 10px;
     font-size: 0.86rem;
-  }
-
-  .timeline-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
   }
 
   .quick-stats strong {
