@@ -184,36 +184,41 @@ a {
   box-shadow: 0 6px 16px rgba(16, 24, 40, 0.25);
 }
 
-/* Only nav menus have rounded corners, not the entire header */
 .nav-links {
-  gap: 4px;
-  padding: 4px 6px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  gap: 22px;
   font-family: var(--font-sans);
   color: var(--muted);
-  font-size: 0.93rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .nav-links a {
   position: relative;
-  padding: 7px 14px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.nav-links a::after {
+  position: absolute;
+  right: 0;
+  bottom: -7px;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.2s ease;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--text);
 }
 
-.nav-links a::after {
-  display: none;
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  transform: scaleX(1);
 }
 
 .menu-toggle {
@@ -547,59 +552,6 @@ h3 {
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 28px;
-}
-
-.hero-timeline {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 22px;
-  padding: 8px 14px;
-  background: rgba(0, 127, 115, 0.05);
-  border: 1px solid rgba(0, 127, 115, 0.15);
-  border-radius: 999px;
-  width: fit-content;
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-}
-
-[data-theme="dark"] .hero-timeline {
-  background: rgba(20, 184, 166, 0.08);
-  border-color: rgba(20, 184, 166, 0.2);
-}
-
-.timeline-lead {
-  color: var(--muted);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 0.7rem;
-}
-
-.timeline-step {
-  color: var(--text);
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.timeline-step span {
-  color: var(--accent);
-  font-size: 0.7rem;
-}
-
-.timeline-step:hover {
-  color: var(--accent);
-  transform: translateY(-1px);
-}
-
-.timeline-arrow {
-  color: var(--muted);
-  opacity: 0.55;
-  font-size: 0.72rem;
 }
 
 .btn {
@@ -1639,18 +1591,6 @@ h3 {
   border-bottom-color: var(--line);
 }
 
-[data-theme="dark"] .nav-links {
-  background: #111827;
-  border-color: #243347;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-}
-
-[data-theme="dark"] .nav-links a:hover,
-[data-theme="dark"] .nav-links a.active {
-  background: rgba(20, 184, 166, 0.16);
-  color: #2dd4bf;
-}
-
 [data-theme="dark"] .brand-mark {
   background: var(--accent);
   color: #0b0f17;
@@ -1937,11 +1877,6 @@ h3 {
   .education-grid {
     grid-template-columns: 1fr;
     gap: 16px;
-  }
-
-  .hero-timeline {
-    width: 100%;
-    justify-content: flex-start;
   }
 
   .contact-section {
