@@ -458,7 +458,7 @@
       </section>
 
       <section class="section contact-section" id="contact">
-        <div class="container split">
+        <div class="container split contact-split">
           <div class="section-heading reveal">
             <p class="eyebrow">Contact</p>
             <h2>Let’s connect</h2>
@@ -468,26 +468,22 @@
             id="contactForm"
             action="https://formspree.io/f/mbdeovvr"
             method="POST"
-            novalidate
           >
             <div class="form-row">
               <div class="form-field">
-                <label for="name">Name</label>
-                <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" />
-                <small class="error-message"></small>
+                <label for="name">Name <span class="required-mark" title="Required">*</span></label>
+                <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required />
               </div>
 
               <div class="form-field">
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" />
-                <small class="error-message"></small>
+                <label for="email">Email <span class="required-mark" title="Required">*</span></label>
+                <input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" required />
               </div>
             </div>
 
             <div class="form-field">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="3" placeholder="Write your message"></textarea>
-              <small class="error-message"></small>
+              <label for="message">Message <span class="required-mark" title="Required">*</span></label>
+              <textarea id="message" name="message" rows="4" placeholder="Write your message..." required minlength="10"></textarea>
             </div>
 
             <button class="btn primary submit-btn" type="submit"><span class="btn-spinner" aria-hidden="true"></span><span class="btn-text">Submit Message</span></button>

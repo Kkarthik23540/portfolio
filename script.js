@@ -298,21 +298,16 @@ window.addEventListener(
   { passive: true }
 );
 
-function setFieldError(field, message) {
+function setFieldInvalid(field, isInvalid) {
   if (!field) return;
   const wrapper = field.closest(".form-field");
   if (!wrapper) return;
 
-  const error = wrapper.querySelector(".error-message");
-
-  wrapper.classList.toggle("invalid", Boolean(message));
-  if (message) {
+  wrapper.classList.toggle("invalid", Boolean(isInvalid));
+  if (isInvalid) {
     field.setAttribute("aria-invalid", "true");
   } else {
     field.removeAttribute("aria-invalid");
-  }
-  if (error) {
-    error.textContent = message;
   }
 }
 
@@ -324,31 +319,35 @@ function validateContactForm() {
   const message = contactForm.elements.message;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   let isValid = true;
+  let firstInvalid = null;
 
-  setFieldError(name, "");
-  setFieldError(email, "");
-  setFieldError(message, "");
+  setFieldInvalid(name, false);
+  setFieldInvalid(email, false);
+  setFieldInvalid(message, false);
 
   if (message.value.trim().length < 10) {
-    setFieldError(message, "Message should be at least 10 characters.");
+    setFieldInvalid(message, true);
     isValid = false;
+    firstInvalid = message;
   }
 
   if (!emailPattern.test(email.value.trim())) {
-    setFieldError(email, "Please enter a valid email address.");
+    setFieldInvalid(email, true);
     isValid = false;
+    firstInvalid = email;
   }
 
   if (name.value.trim().length < 2) {
-    setFieldError(name, "Please enter your name.");
+    setFieldInvalid(name, true);
     isValid = false;
+    firstInvalid = name;
   }
 
-  if (!isValid) {
-    const firstInvalid = contactForm.querySelector(
-      ".form-field.invalid input, .form-field.invalid textarea"
-    );
-    if (firstInvalid) firstInvalid.focus();
+  if (!isValid && firstInvalid) {
+    firstInvalid.focus();
+    if (typeof firstInvalid.reportValidity === "function") {
+      firstInvalid.reportValidity();
+    }
   }
 
   return isValid;
@@ -413,9 +412,9 @@ if (contactForm) {
       }
 
       contactForm.reset();
-      setFieldError(contactForm.elements.name, "");
-      setFieldError(contactForm.elements.email, "");
-      setFieldError(contactForm.elements.message, "");
+      setFieldInvalid(contactForm.elements.name, false);
+      setFieldInvalid(contactForm.elements.email, false);
+      setFieldInvalid(contactForm.elements.message, false);
       setFormStatus(status, "success", "Message sent successfully.", 4500);
     } catch (error) {
       setFormStatus(status, "error", "Message could not be sent. Please try again.", 6000);
@@ -428,7 +427,7 @@ if (contactForm) {
 
   contactForm.querySelectorAll("input, textarea").forEach((field) => {
     field.addEventListener("input", () => {
-      setFieldError(field, "");
+      setFieldInvalid(field, false);
       const status = contactForm.querySelector(".form-status");
       if (status) {
         setFormStatus(status, "", "");
