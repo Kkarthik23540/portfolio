@@ -175,7 +175,11 @@ if (menuToggle && navLinks) {
   });
 
   navItems.forEach((item) => {
-    item.addEventListener("click", closeMenu);
+    item.addEventListener("click", () => {
+      navItems.forEach((n) => n.classList.remove("active"));
+      item.classList.add("active");
+      closeMenu();
+    });
   });
 
   document.addEventListener("click", (event) => {
