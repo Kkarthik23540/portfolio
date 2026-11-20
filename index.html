@@ -67,117 +67,123 @@
   <body>
     <canvas id="dotsCanvas" class="dots-canvas" aria-hidden="true"></canvas>
     <header class="site-header" id="top">
-      <nav class="nav container" aria-label="Main navigation">
-        <a class="brand" href="#home" id="brandLogo" aria-label="K Karthik Reddy home">
-          <span class="brand-mark">KR</span>
-          <span>K Karthik Reddy</span>
-        </a>
+      <div class="container">
+        <nav class="nav" aria-label="Main navigation">
+          <a class="brand" href="#home" id="brandLogo" aria-label="K Karthik Reddy home">
+            <span class="brand-mark">KR</span>
+            <span>K Karthik Reddy</span>
+          </a>
 
-        <div class="nav-right">
-          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Toggle theme">
-            <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
+          <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Toggle theme">
+              <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+              <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
 
-          <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#education">Education</a>
-            <a href="#projects">Projects</a>
-            <a href="#certifications">Certifications</a>
-            <a href="#contact">Contact</a>
+            <div class="nav-links">
+              <a href="#about">About</a>
+              <a href="#skills">Skills</a>
+              <a href="#education">Education</a>
+              <a href="#projects">Projects</a>
+              <a href="#certifications">Certifications</a>
+              <a href="#contact">Contact</a>
+            </div>
+
+            <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
           </div>
-
-          <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
-      </nav>
+        </nav>
+      </div>
       <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
     </header>
 
     <main>
       <section class="hero section" id="home">
-        <div class="container hero-grid">
-          <div class="hero-copy reveal">
-            <p class="eyebrow">Computer Science Graduate</p>
-            <h1 class="hero-title typewriter" data-text="K Karthik Reddy" aria-label="K Karthik Reddy">K Karthik Reddy</h1>
-            <p class="availability-badge"><span aria-hidden="true"></span>Available for opportunities</p>
-            <p class="hero-text">
-              Computer Science graduate seeking a challenging opportunity to apply my
-              technical skills, contribute to real-world projects, and grow with a
-              dynamic organization.
-            </p>
-            <div class="hero-actions">
-              <a class="btn primary" href="#projects">
-                <span>View Projects</span>
-              </a>
-              <a class="btn secondary" href="#contact">
-                <span>Contact Me</span>
-              </a>
-            </div>
-          </div>
-
-          <aside class="profile-panel reveal" aria-label="Profile highlights">
-            <div class="avatar-badge">
-              <div class="avatar-monogram">KR</div>
-            </div>
-            <div class="profile-meta">
-              <p class="location-tag">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>Hyderabad, India</span>
+        <div class="container">
+          <div class="hero-grid">
+            <div class="hero-copy reveal">
+              <p class="eyebrow">Computer Science Graduate</p>
+              <h1 class="hero-title typewriter" data-text="K Karthik Reddy" aria-label="K Karthik Reddy">K Karthik Reddy</h1>
+              <p class="availability-badge"><span aria-hidden="true"></span>Available for opportunities</p>
+              <p class="hero-text">
+                Computer Science graduate seeking a challenging opportunity to apply my
+                technical skills, contribute to real-world projects, and grow with a
+                dynamic organization.
               </p>
-            </div>
-            <div class="quick-stats">
-              <div>
-                <strong class="stat-number" data-target="3">3</strong>
-                <span>Projects</span>
-              </div>
-              <div>
-                <strong class="stat-number" data-target="12" data-suffix="+">12+</strong>
-                <span>Technical Skills</span>
-              </div>
-              <div>
-                <strong class="stat-number" data-target="2025" data-start="2020">2025</strong>
-                <span>B.Tech CSE</span>
+              <div class="hero-actions">
+                <a class="btn primary" href="#projects">
+                  <span>View Projects</span>
+                </a>
+                <a class="btn secondary" href="#contact">
+                  <span>Contact Me</span>
+                </a>
               </div>
             </div>
-          </aside>
+
+            <aside class="profile-panel reveal" aria-label="Profile highlights">
+              <div class="avatar-badge">
+                <div class="avatar-monogram">KR</div>
+              </div>
+              <div class="profile-meta">
+                <p class="location-tag">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Hyderabad, India</span>
+                </p>
+              </div>
+              <div class="quick-stats">
+                <div>
+                  <strong class="stat-number" data-target="3">3</strong>
+                  <span>Projects</span>
+                </div>
+                <div>
+                  <strong class="stat-number" data-target="12" data-suffix="+">12+</strong>
+                  <span>Technical Skills</span>
+                </div>
+                <div>
+                  <strong class="stat-number" data-target="2025" data-start="2020">2025</strong>
+                  <span>B.Tech CSE</span>
+                </div>
+              </div>
+            </aside>
+          </div>
         </div>
       </section>
 
       <section class="section" id="about">
-        <div class="container split">
-          <div class="section-heading reveal">
-            <p class="eyebrow">About</p>
-            <h2>Focused on practical, real-world software.</h2>
-          </div>
-          <div class="reveal">
-            <p>
-              I graduated in Computer Science from Jaya Prakash Narayan College of
-              Engineering, JNTUH, with a CGPA of 7.82. I enjoy building web, Android,
-              Flutter, and data-driven applications that solve clear problems and
-              improve user workflows.
-            </p>
-            <p>
-              My project experience includes restaurant table booking, a machine
-              learning system for stress detection based on sleeping habits, and a
-              cross-platform mobile application built during my Flutter internship.
-            </p>
+        <div class="container">
+          <div class="split">
+            <div class="section-heading reveal">
+              <p class="eyebrow">About</p>
+              <h2>Focused on practical, real-world software.</h2>
+            </div>
+            <div class="about-text reveal">
+              <p>
+                I graduated in Computer Science from Jaya Prakash Narayan College of
+                Engineering, JNTUH, with a CGPA of 7.82. I enjoy building web, Android,
+                Flutter, and data-driven applications that solve clear problems and
+                improve user workflows.
+              </p>
+              <p>
+                My project experience includes restaurant table booking, a machine
+                learning system for stress detection based on sleeping habits, and a
+                cross-platform mobile application built during my Flutter internship.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -508,10 +514,10 @@
       </section>
 
       <section class="section contact-section" id="contact">
-        <div class="container contact-container">
+        <div class="container">
           <div class="contact-grid">
             <div class="contact-info-col reveal">
-              <div class="contact-intro">
+              <div class="section-heading contact-intro">
                 <p class="eyebrow">Contact</p>
                 <h2>Let’s connect</h2>
                 <p class="contact-subtext">
@@ -599,8 +605,10 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container footer-content">
-        <p class="footer-copy">© 2026 K Karthik Reddy. All rights reserved.</p>
+      <div class="container">
+        <div class="footer-content">
+          <p class="footer-copy">© 2026 K Karthik Reddy. All rights reserved.</p>
+        </div>
       </div>
     </footer>
 
