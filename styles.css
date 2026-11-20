@@ -1508,15 +1508,17 @@ h3 {
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
-  gap: 48px;
+  gap: 40px;
   align-items: start;
+  max-width: 1140px;
+  margin: 0 auto;
   width: 100%;
 }
 
 .contact-info-col {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 22px;
 }
 
 .contact-intro .eyebrow {
@@ -1544,15 +1546,15 @@ h3 {
 .contact-social-cards {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 440px;
+  gap: 14px;
+  max-width: 100%;
   width: 100%;
 }
 
 .contact-social-card {
   display: block;
   padding: 18px 22px;
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
@@ -1568,6 +1570,12 @@ h3 {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
+.contact-social-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--accent-rgb), 0.45);
+  box-shadow: 0 14px 32px rgba(var(--accent-rgb), 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
 .social-card-inner {
   display: flex;
   align-items: center;
@@ -1575,16 +1583,16 @@ h3 {
 }
 
 .contact-social-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   background: var(--accent-soft);
   color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease, color 0.25s ease;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .contact-social-icon svg {
@@ -1608,7 +1616,7 @@ h3 {
 
 .contact-social-name {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: var(--text);
@@ -1616,28 +1624,107 @@ h3 {
 }
 
 .social-tag {
+  display: inline-flex;
+  align-items: center;
   font-size: 0.72rem;
   font-family: var(--font-mono);
-  padding: 2px 8px;
+  padding: 4px 10px;
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent);
-  font-weight: 600;
-  transition: background 0.2s ease, color 0.2s ease;
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .contact-social-handle {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: var(--muted);
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .social-action-arrow {
   margin-left: auto;
   color: var(--muted);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease, background-color 0.2s ease, border-color 0.2s ease;
   flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.contact-social-card:hover .social-action-arrow {
+  transform: translate(3px, -3px);
+  background: var(--accent-soft);
+  border-color: rgba(var(--accent-rgb), 0.3);
+  color: var(--accent);
+}
+
+[data-theme="dark"] .social-action-arrow {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Email Authentic Symbol & Card Hover */
+.contact-social-card.email-card .email-icon {
+  background: rgba(var(--accent-rgb), 0.09);
+  color: var(--accent);
+  border: 1px solid rgba(var(--accent-rgb), 0.22);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.contact-social-card.email-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 32px rgba(var(--accent-rgb), 0.18);
+}
+
+.contact-social-card.email-card:hover .email-icon {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.45);
+}
+
+.contact-social-card.email-card:hover .social-action-arrow {
+  transform: translate(3px, -3px);
+  color: var(--accent);
+}
+
+[data-theme="dark"] .contact-social-card.email-card .email-icon {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="dark"] .contact-social-card.email-card:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 14px 32px rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="dark"] .contact-social-card.email-card:hover .email-icon {
+  background: #38bdf8;
+  color: #031024;
+  border-color: #38bdf8;
+  transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.55);
+}
+
+[data-theme="dark"] .contact-social-card.email-card:hover .social-action-arrow {
+  color: #38bdf8;
 }
 
 /* GitHub Authentic Symbol & Card Hover */
@@ -1756,14 +1843,14 @@ h3 {
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 32px;
+  gap: 20px;
+  padding: 30px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05);
   width: 100%;
-  max-width: 520px;
+  max-width: 540px;
   margin: 0 auto;
 }
 
@@ -1775,14 +1862,37 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+}
+
+.form-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-header-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+
+.form-header-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .form-card-header h3 {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 700;
   margin: 0;
   color: var(--text);
@@ -1792,9 +1902,16 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #047857;
 }
 
 .response-badge .badge-dot {
@@ -1802,6 +1919,19 @@ h3 {
   height: 7px;
   border-radius: 50%;
   background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+[data-theme="dark"] .form-header-icon {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="dark"] .response-badge {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
 }
 
 @media (max-width: 900px) {
@@ -1899,26 +2029,36 @@ h3 {
 
 .submit-btn {
   width: 100%;
-  min-height: 46px;
-  padding: 0 20px;
+  min-height: 48px;
+  padding: 0 22px;
   border: 0;
   border-radius: 999px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--font-sans);
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin-top: 4px;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-btn .btn-icon {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
 }
 
 .submit-btn:hover:not(:disabled) {
   background: #006b61;
   box-shadow: 0 10px 24px rgba(var(--accent-rgb), 0.3);
   transform: translateY(-2px);
+}
+
+.submit-btn:hover:not(:disabled) .btn-icon {
+  transform: translate(3px, -3px);
 }
 
 .submit-btn:disabled {
