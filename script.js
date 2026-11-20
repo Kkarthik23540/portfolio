@@ -1,16 +1,53 @@
+/**
+ * ==============================================================================
+ * PORTFOLIO CLIENT APPLICATION JAVASCRIPT
+ * ==============================================================================
+ * Author: K Karthik Reddy
+ * Description: Interactive behaviors, canvas background, accessibility handlers,
+ *              theme switching, card spotlights, scroll tracking, and AJAX form.
+ *
+ * TABLE OF CONTENTS:
+ *  01. Analytics & Initial Theme Initialization
+ *  02. DOM Elements & State Cache
+ *  03. Brand Logo Smooth Top Handler
+ *  04. Scroll Progress Indicator
+ *  05. Active Navigation Link Tracker
+ *  06. Typewriter Hero Effect
+ *  07. Interactive Dots Canvas (Constellation & Card Exclusion)
+ *  08. Animated Counter Statistics
+ *  09. Card Spotlight Effect (Cursor Glow Coordinates)
+ *  10. Theme Management & Accessibility Sync
+ *  11. Mobile Navigation & Keyboard Control
+ *  12. Intersection Observers (Reveal & Section Spy)
+ *  13. Scroll & Viewport Event Handlers
+ *  14. Contact Form Validation & Async Submission
+ * ==============================================================================
+ */
+
+// ------------------------------------------------------------------------------
+// 01. ANALYTICS & INITIAL THEME INITIALIZATION
+// ------------------------------------------------------------------------------
 import { inject } from "@vercel/analytics";
 
+// Immediate theme resolution to prevent style flashes
 try {
   const storedTheme = localStorage.getItem("theme");
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
   document.documentElement.setAttribute("data-theme", initialTheme);
-} catch (e) {}
+} catch (e) {
+  /* Fallback quietly if localStorage is restricted */
+}
 
+// Flag that JavaScript is fully enabled
 document.documentElement.classList.add("js");
 
+// Initialize Vercel telemetry
 inject();
 
+// ------------------------------------------------------------------------------
+// 02. DOM ELEMENTS & STATE CACHE
+// ------------------------------------------------------------------------------
 const themeToggle = document.querySelector("#themeToggle");
 const menuToggle = document.querySelector(".menu-toggle");
 const navLinks = document.querySelector(".nav-links");
@@ -27,6 +64,9 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 
 let statsAnimated = false;
 
+// ------------------------------------------------------------------------------
+// 03. BRAND LOGO SMOOTH TOP HANDLER
+// ------------------------------------------------------------------------------
 if (brandLogo) {
   brandLogo.addEventListener("click", (e) => {
     e.preventDefault();
@@ -37,6 +77,9 @@ if (brandLogo) {
   });
 }
 
+// ------------------------------------------------------------------------------
+// 04. SCROLL PROGRESS INDICATOR
+// ------------------------------------------------------------------------------
 function updateScrollProgress() {
   if (!scrollProgressBar) return;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -48,12 +91,18 @@ function updateScrollProgress() {
   scrollProgressBar.style.width = `${progress * 100}%`;
 }
 
+// ------------------------------------------------------------------------------
+// 05. ACTIVE NAVIGATION LINK TRACKER
+// ------------------------------------------------------------------------------
 function setActiveSection(id) {
   navItems.forEach((item) => {
     item.classList.toggle("active", item.getAttribute("href") === `#${id}`);
   });
 }
 
+// ------------------------------------------------------------------------------
+// 06. TYPEWRITER HERO EFFECT
+// ------------------------------------------------------------------------------
 function runTypewriter() {
   if (!typewriter) return;
 
@@ -79,6 +128,9 @@ function runTypewriter() {
   });
 }
 
+// ------------------------------------------------------------------------------
+// 07. INTERACTIVE DOTS CANVAS (Constellation & Card Exclusion)
+// ------------------------------------------------------------------------------
 function initDotsCanvas() {
   const canvas = document.querySelector("#dotsCanvas");
   if (!canvas) return;
@@ -97,9 +149,10 @@ function initDotsCanvas() {
     y: -9999,
     targetX: -9999,
     targetY: -9999,
-    active: false
+    active: false,
   };
 
+  // Recompute canvas size and regenerate coordinate grid
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     width = window.innerWidth;
@@ -120,7 +173,7 @@ function initDotsCanvas() {
       for (let r = 0; r < rows; r++) {
         dots.push({
           x: c * gridSpacing,
-          y: r * gridSpacing
+          y: r * gridSpacing,
         });
       }
     }
@@ -128,6 +181,7 @@ function initDotsCanvas() {
 
   let cardRects = [];
 
+  // Exclude card boundaries so canvas dots do not show through cards
   function updateCardRects() {
     const cards = document.querySelectorAll(
       ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-form, .contact-social-card, .site-header"
@@ -140,7 +194,7 @@ function initDotsCanvas() {
           left: r.left - 2,
           right: r.right + 2,
           top: r.top - 2,
-          bottom: r.bottom + 2
+          bottom: r.bottom + 2,
         });
       }
     }
@@ -166,9 +220,12 @@ function initDotsCanvas() {
       mouse.y = -9999;
       return;
     }
-    const overBox = e.target && e.target.closest && e.target.closest(
-      ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-form, .contact-social-card, nav, .site-header, .stat-chip, button, a, input, textarea"
-    );
+    const overBox =
+      e.target &&
+      e.target.closest &&
+      e.target.closest(
+        ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-form, .contact-social-card, nav, .site-header, .stat-chip, button, a, input, textarea"
+      );
     if (overBox) {
       mouse.active = false;
       mouse.x = -9999;
@@ -189,6 +246,7 @@ function initDotsCanvas() {
     mouse.y = -9999;
   });
 
+  // Main canvas animation loop
   function render() {
     if (document.hidden) {
       requestAnimationFrame(render);
@@ -196,7 +254,6 @@ function initDotsCanvas() {
     }
 
     ctx.clearRect(0, 0, width, height);
-
     updateCardRects();
 
     if (isInsideCard(mouse.x, mouse.y)) {
@@ -215,7 +272,14 @@ function initDotsCanvas() {
     const accentRgb = isDark ? "56, 189, 248" : "13, 148, 136";
 
     // 1. Draw smooth cursor core & soft glow
-    if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && mouse.x <= width && mouse.y <= height && !isInsideCard(mouse.x, mouse.y)) {
+    if (
+      mouse.active &&
+      mouse.x >= 0 &&
+      mouse.y >= 0 &&
+      mouse.x <= width &&
+      mouse.y <= height &&
+      !isInsideCard(mouse.x, mouse.y)
+    ) {
       const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 24);
       glow.addColorStop(0, `rgba(${accentRgb}, ${isDark ? 0.22 : 0.28})`);
       glow.addColorStop(1, `rgba(${accentRgb}, 0)`);
@@ -301,6 +365,9 @@ function initDotsCanvas() {
   requestAnimationFrame(render);
 }
 
+// ------------------------------------------------------------------------------
+// 08. ANIMATED COUNTER STATISTICS
+// ------------------------------------------------------------------------------
 function animateStats() {
   if (statsAnimated || statElements.length === 0) return;
   statsAnimated = true;
@@ -340,11 +407,14 @@ function animateStats() {
   });
 }
 
+// Trigger initial setup routines
 runTypewriter();
 updateScrollProgress();
 initDotsCanvas();
 
-/* --- Cursor Spotlight Effect (Dynamic Cursor-Following Highlight for Cards) --- */
+// ------------------------------------------------------------------------------
+// 09. CARD SPOTLIGHT EFFECT (Dynamic Cursor Coordinates)
+// ------------------------------------------------------------------------------
 function initSpotlight() {
   const cards = document.querySelectorAll(
     ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-social-card"
@@ -366,7 +436,9 @@ function initSpotlight() {
 
 initSpotlight();
 
-/* --- Theme Toggle & Preferences --- */
+// ------------------------------------------------------------------------------
+// 10. THEME MANAGEMENT & ACCESSIBILITY SYNC
+// ------------------------------------------------------------------------------
 function getActiveTheme() {
   return document.documentElement.getAttribute("data-theme") || "light";
 }
@@ -409,12 +481,13 @@ if (themeToggle) {
   });
 }
 
+// Listen for OS system theme changes when user has not set an explicit override
 try {
   const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const handleSystemThemeChange = (e) => {
     try {
       if (!localStorage.getItem("theme")) {
-        applyTheme(e.matches ? "dark" : "light", false, true);
+        applyTheme(e.matches ? "dark" : "light", false);
       }
     } catch (err) {}
   };
@@ -426,6 +499,9 @@ try {
   }
 } catch (e) {}
 
+// ------------------------------------------------------------------------------
+// 11. MOBILE NAVIGATION & KEYBOARD CONTROL
+// ------------------------------------------------------------------------------
 if (menuToggle && navLinks) {
   function closeMenu() {
     navLinks.classList.remove("open");
@@ -465,6 +541,9 @@ if (menuToggle && navLinks) {
   });
 }
 
+// ------------------------------------------------------------------------------
+// 12. INTERSECTION OBSERVERS (Reveal & Section Spy)
+// ------------------------------------------------------------------------------
 if (backToTop) {
   backToTop.setAttribute("tabindex", "-1");
   backToTop.addEventListener("click", () => {
@@ -513,6 +592,9 @@ if ("IntersectionObserver" in window) {
   animateStats();
 }
 
+// ------------------------------------------------------------------------------
+// 13. SCROLL & VIEWPORT EVENT HANDLERS
+// ------------------------------------------------------------------------------
 let scrollTicking = false;
 
 function onScroll() {
@@ -558,6 +640,9 @@ window.addEventListener(
   { passive: true }
 );
 
+// ------------------------------------------------------------------------------
+// 14. CONTACT FORM VALIDATION & ASYNC SUBMISSION
+// ------------------------------------------------------------------------------
 function setFieldInvalid(field, isInvalid) {
   if (!field) return;
   const wrapper = field.closest(".form-field");
@@ -681,7 +766,7 @@ if (contactForm) {
     } finally {
       submitButton.disabled = false;
       submitButton.classList.remove("is-loading");
-      if (btnText) btnText.textContent = "Submit Message";
+      if (btnText) btnText.textContent = "Send Message";
     }
   });
 
