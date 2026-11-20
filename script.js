@@ -21,8 +21,7 @@ const sections = document.querySelectorAll("main section[id]");
 const contactForm = document.querySelector("#contactForm");
 const typewriter = document.querySelector(".typewriter");
 const scrollBrick = document.querySelector("#scrollBrick");
-const scrollTrack = document.querySelector(".vertical-scroll-track");
-const scrollDots = document.querySelectorAll(".scroll-dot");
+const scrollTrack = document.querySelector("#scrollTrack");
 const statElements = document.querySelectorAll(".stat-number");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -46,23 +45,27 @@ function setActiveSection(id) {
   navItems.forEach((item) => {
     item.classList.toggle("active", item.getAttribute("href") === `#${id}`);
   });
-  scrollDots.forEach((dot) => {
-    dot.classList.toggle("active", dot.getAttribute("href") === `#${id}`);
-  });
 }
 
-if (scrollDots.length > 0) {
-  scrollDots.forEach((dot) => {
-    dot.addEventListener("click", (e) => {
-      e.preventDefault();
-      const targetId = dot.getAttribute("href");
-      if (!targetId) return;
-      const targetSection = document.querySelector(targetId);
+if (scrollTrack) {
+  const sectionList = Array.from(document.querySelectorAll("main section[id]"));
+  scrollTrack.addEventListener("click", (e) => {
+    const rect = scrollTrack.getBoundingClientRect();
+    const clickY = e.clientY - rect.top;
+    const ratio = Math.max(0, Math.min(1, clickY / rect.height));
+
+    if (sectionList.length > 0) {
+      const targetIndex = Math.min(sectionList.length - 1, Math.floor(ratio * sectionList.length));
+      const targetSection = sectionList[targetIndex];
       if (targetSection) {
         const targetTop = targetSection.getBoundingClientRect().top + window.scrollY - 70;
         window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+        return;
       }
-    });
+    }
+
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: ratio * scrollHeight, behavior: "smooth" });
   });
 }
 
@@ -102,11 +105,13 @@ function initDotsCanvas() {
   let dpr = 1;
   let dots = [];
   const gridSpacing = 32;
-  const maxDistance = 70;
+  const influenceRadius = 88;
 
   const mouse = {
     x: -9999,
     y: -9999,
+    targetX: -9999,
+    targetY: -9999,
     active: false
   };
 
@@ -130,9 +135,7 @@ function initDotsCanvas() {
       for (let r = 0; r < rows; r++) {
         dots.push({
           x: c * gridSpacing,
-          y: r * gridSpacing,
-          originX: c * gridSpacing,
-          originY: r * gridSpacing
+          y: r * gridSpacing
         });
       }
     }
@@ -142,21 +145,21 @@ function initDotsCanvas() {
   resize();
 
   window.addEventListener("pointermove", (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
     mouse.active = true;
   }, { passive: true });
 
   window.addEventListener("pointerdown", (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
     mouse.active = true;
   }, { passive: true });
 
   window.addEventListener("pointerleave", () => {
     mouse.active = false;
-    mouse.x = -9999;
-    mouse.y = -9999;
+    mouse.targetX = -9999;
+    mouse.targetY = -9999;
   });
 
   function render() {
@@ -167,67 +170,96 @@ function initDotsCanvas() {
 
     ctx.clearRect(0, 0, width, height);
 
-    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-    const dotBaseColor = isDark ? "rgba(148, 163, 184, 0.2)" : "rgba(100, 116, 139, 0.22)";
-    const accentLineRgb = isDark ? "56, 189, 248" : "13, 148, 136";
-    const ballRgb = isDark ? "56, 189, 248" : "13, 148, 136";
+    // Silky smooth mouse interpolation
+    if (mouse.active) {
+      if (mouse.x < -1000) {
+        mouse.x = mouse.targetX;
+        mouse.y = mouse.targetY;
+      } else {
+        mouse.x += (mouse.targetX - mouse.x) * 0.18;
+        mouse.y += (mouse.targetY - mouse.y) * 0.18;
+      }
+    } else {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    }
 
-    // 1. Draw gentle glowing cursor ball when mouse is active in viewport
+    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    const dotBaseColor = isDark ? "rgba(148, 163, 184, 0.18)" : "rgba(100, 116, 139, 0.22)";
+    const accentRgb = isDark ? "56, 189, 248" : "13, 148, 136";
+
+    // 1. Draw smooth cursor core & soft glow
     if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && mouse.x <= width && mouse.y <= height) {
-      const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 22);
-      glow.addColorStop(0, `rgba(${ballRgb}, 0.2)`);
-      glow.addColorStop(1, `rgba(${ballRgb}, 0)`);
+      const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 24);
+      glow.addColorStop(0, `rgba(${accentRgb}, 0.22)`);
+      glow.addColorStop(1, `rgba(${accentRgb}, 0)`);
       ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 22, 0, Math.PI * 2);
+      ctx.arc(mouse.x, mouse.y, 24, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = `rgb(${ballRgb})`;
+      ctx.fillStyle = `rgb(${accentRgb})`;
       ctx.beginPath();
       ctx.arc(mouse.x, mouse.y, 2.5, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // 2. Draw connections and dots (light, subtle, clean whisper of lines)
+    // 2. Identify nearby dots & draw delicate mesh connections
+    const nearby = [];
+
     for (let i = 0; i < dots.length; i++) {
       const d = dots[i];
-      let currentDotColor = dotBaseColor;
-      let currentRadius = 0.85;
+      let radius = 0.85;
+      let color = dotBaseColor;
 
       if (mouse.active && mouse.x >= 0 && mouse.y >= 0) {
-        const dx = mouse.x - d.x;
-        const dy = mouse.y - d.y;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist < maxDistance) {
-          const ratio = 1 - dist / maxDistance;
-
-          ctx.strokeStyle = `rgba(${accentLineRgb}, ${ratio * 0.16})`;
-          ctx.lineWidth = 0.75;
-          ctx.beginPath();
-          ctx.moveTo(mouse.x, mouse.y);
-          ctx.lineTo(d.x, d.y);
-          ctx.stroke();
-
-          const pull = ratio * 1.8;
-          d.x = d.originX + (dx / dist) * pull;
-          d.y = d.originY + (dy / dist) * pull;
-
-          currentDotColor = `rgba(${accentLineRgb}, ${0.35 + ratio * 0.45})`;
-          currentRadius = 1.25;
-        } else {
-          d.x += (d.originX - d.x) * 0.1;
-          d.y += (d.originY - d.y) * 0.1;
+        const dist = Math.hypot(mouse.x - d.x, mouse.y - d.y);
+        if (dist < influenceRadius) {
+          const ratio = 1 - dist / influenceRadius;
+          radius = 0.85 + ratio * 1.4;
+          color = `rgba(${accentRgb}, ${0.35 + ratio * 0.5})`;
+          nearby.push({ dot: d, dist, ratio });
         }
-      } else {
-        d.x += (d.originX - d.x) * 0.1;
-        d.y += (d.originY - d.y) * 0.1;
       }
 
-      ctx.fillStyle = currentDotColor;
+      ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(d.x, d.y, currentRadius, 0, Math.PI * 2);
+      ctx.arc(d.x, d.y, radius, 0, Math.PI * 2);
       ctx.fill();
+    }
+
+    // Connect mouse to the top 2-3 closest dots with gentle soft lines
+    if (nearby.length > 0) {
+      nearby.sort((a, b) => a.dist - b.dist);
+      const topCount = Math.min(3, nearby.length);
+      for (let k = 0; k < topCount; k++) {
+        const item = nearby[k];
+        ctx.strokeStyle = `rgba(${accentRgb}, ${item.ratio * 0.22})`;
+        ctx.lineWidth = 0.75;
+        ctx.beginPath();
+        ctx.moveTo(mouse.x, mouse.y);
+        ctx.lineTo(item.dot.x, item.dot.y);
+        ctx.stroke();
+      }
+
+      // Connect adjacent nearby dots to each other (organic constellation mesh)
+      const maxNeighborDist = gridSpacing * 1.45;
+      for (let m = 0; m < nearby.length; m++) {
+        for (let n = m + 1; n < nearby.length; n++) {
+          const d1 = nearby[m].dot;
+          const d2 = nearby[n].dot;
+          const dotDist = Math.hypot(d1.x - d2.x, d1.y - d2.y);
+          if (dotDist <= maxNeighborDist) {
+            const pairAlpha = Math.min(nearby[m].ratio, nearby[n].ratio) * 0.18;
+            ctx.strokeStyle = `rgba(${accentRgb}, ${pairAlpha})`;
+            ctx.lineWidth = 0.65;
+            ctx.beginPath();
+            ctx.moveTo(d1.x, d1.y);
+            ctx.lineTo(d2.x, d2.y);
+            ctx.stroke();
+          }
+        }
+      }
     }
 
     requestAnimationFrame(render);
