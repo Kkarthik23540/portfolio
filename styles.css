@@ -1518,28 +1518,15 @@ h3 {
 .contact-info-col {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
 }
 
-.contact-intro .eyebrow {
-  margin-bottom: 8px;
-}
-
-.contact-intro h2 {
-  font-size: clamp(2.1rem, 4.2vw, 3.2rem);
-  font-weight: 800;
-  margin-bottom: 18px;
-  line-height: 1.14;
-  letter-spacing: -0.03em;
-  color: var(--text);
-}
-
-.contact-intro .contact-subtext {
+.contact-subtext {
   font-size: 1.05rem;
   line-height: 1.65;
   color: var(--muted);
   margin: 0;
-  max-width: 460px;
+  max-width: 480px;
 }
 
 /* Social Cards with Authentic Brand Hover */
@@ -1859,79 +1846,17 @@ h3 {
 }
 
 .form-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--line);
   margin-bottom: 4px;
 }
 
-.form-header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.form-header-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  border: 1px solid rgba(var(--accent-rgb), 0.2);
-}
-
-.form-header-icon svg {
-  width: 18px;
-  height: 18px;
-}
-
 .form-card-header h3 {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
   margin: 0;
   color: var(--text);
-}
-
-.response-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #047857;
-}
-
-.response-badge .badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-}
-
-[data-theme="dark"] .form-header-icon {
-  background: rgba(56, 189, 248, 0.12);
-  color: #38bdf8;
-  border-color: rgba(56, 189, 248, 0.25);
-}
-
-[data-theme="dark"] .response-badge {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.35);
-  color: #34d399;
 }
 
 @media (max-width: 900px) {
@@ -2046,19 +1971,10 @@ h3 {
   transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.submit-btn .btn-icon {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  flex-shrink: 0;
-}
-
 .submit-btn:hover:not(:disabled) {
   background: #006b61;
   box-shadow: 0 10px 24px rgba(var(--accent-rgb), 0.3);
   transform: translateY(-2px);
-}
-
-.submit-btn:hover:not(:disabled) .btn-icon {
-  transform: translate(3px, -3px);
 }
 
 .submit-btn:disabled {
