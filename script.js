@@ -42,25 +42,188 @@ function updateScrollProgress() {
 }
 
 function runTypewriter() {
-  if (!typewriter) return;
+  const line1 = document.querySelector(".name-line-1");
+  const line2 = document.querySelector(".name-line-2");
+  if (!line1 || !line2) return;
 
-  const text = typewriter.dataset.text || typewriter.textContent.trim();
+  const text1 = line1.dataset.text || line1.textContent.trim() || "K Karthik";
+  const text2 = line2.dataset.text || line2.textContent.trim() || "Reddy";
+
   if (reducedMotion) {
-    typewriter.textContent = text;
+    line1.textContent = text1;
+    line2.textContent = text2;
     return;
   }
 
-  typewriter.textContent = "";
-  typewriter.classList.add("typing");
+  line1.textContent = "";
+  line2.textContent = "";
+  line1.classList.add("typing");
 
-  [...text].forEach((character, index) => {
+  const speed = 75;
+
+  [...text1].forEach((character, index) => {
     window.setTimeout(() => {
-      typewriter.textContent += character;
-      if (index === text.length - 1) {
-        window.setTimeout(() => typewriter.classList.remove("typing"), 1000);
+      line1.textContent += character;
+      if (index === text1.length - 1) {
+        line1.classList.remove("typing");
+        line2.classList.add("typing");
+
+        [...text2].forEach((char2, index2) => {
+          window.setTimeout(() => {
+            line2.textContent += char2;
+            if (index2 === text2.length - 1) {
+              window.setTimeout(() => line2.classList.remove("typing"), 1200);
+            }
+          }, (index2 + 1) * speed);
+        });
       }
-    }, index * 85);
+    }, (index + 1) * speed);
   });
+}
+
+function initDotsCanvas() {
+  const canvas = document.querySelector("#dotsCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let dots = [];
+  const gridSpacing = 28;
+  const maxDistance = 115;
+
+  const mouse = {
+    x: -9999,
+    y: -9999,
+    active: false
+  };
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildGrid();
+  }
+
+  function buildGrid() {
+    dots = [];
+    const cols = Math.ceil(width / gridSpacing) + 1;
+    const rows = Math.ceil(height / gridSpacing) + 1;
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        dots.push({
+          x: c * gridSpacing,
+          y: r * gridSpacing,
+          originX: c * gridSpacing,
+          originY: r * gridSpacing
+        });
+      }
+    }
+  }
+
+  window.addEventListener("resize", resize, { passive: true });
+  resize();
+
+  window.addEventListener("pointermove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+  }, { passive: true });
+
+  window.addEventListener("pointerdown", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+  }, { passive: true });
+
+  window.addEventListener("pointerleave", () => {
+    mouse.active = false;
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  function render() {
+    if (document.hidden) {
+      requestAnimationFrame(render);
+      return;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+
+    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    const dotBaseColor = isDark ? "rgba(148, 163, 184, 0.22)" : "rgba(100, 116, 139, 0.28)";
+    const accentLineRgb = isDark ? "56, 189, 248" : "79, 70, 229";
+    const ballRgb = isDark ? "56, 189, 248" : "79, 70, 229";
+
+    // 1. Draw glowing cursor ball when mouse is active in viewport
+    if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && mouse.x <= width && mouse.y <= height) {
+      const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 44);
+      glow.addColorStop(0, `rgba(${ballRgb}, 0.28)`);
+      glow.addColorStop(1, `rgba(${ballRgb}, 0)`);
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 44, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = `rgb(${ballRgb})`;
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 2. Draw connections and dots
+    for (let i = 0; i < dots.length; i++) {
+      const d = dots[i];
+      let currentDotColor = dotBaseColor;
+      let currentRadius = 0.95;
+
+      if (mouse.active && mouse.x >= 0 && mouse.y >= 0) {
+        const dx = mouse.x - d.x;
+        const dy = mouse.y - d.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < maxDistance) {
+          const ratio = 1 - dist / maxDistance;
+
+          ctx.strokeStyle = `rgba(${accentLineRgb}, ${ratio * 0.52})`;
+          ctx.lineWidth = ratio * 1.15;
+          ctx.beginPath();
+          ctx.moveTo(mouse.x, mouse.y);
+          ctx.lineTo(d.x, d.y);
+          ctx.stroke();
+
+          const pull = ratio * 3.2;
+          d.x = d.originX + (dx / dist) * pull;
+          d.y = d.originY + (dy / dist) * pull;
+
+          currentDotColor = `rgba(${accentLineRgb}, ${0.5 + ratio * 0.5})`;
+          currentRadius = 1.6;
+        } else {
+          d.x += (d.originX - d.x) * 0.1;
+          d.y += (d.originY - d.y) * 0.1;
+        }
+      } else {
+        d.x += (d.originX - d.x) * 0.1;
+        d.y += (d.originY - d.y) * 0.1;
+      }
+
+      ctx.fillStyle = currentDotColor;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, currentRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
 }
 
 function animateStats() {
@@ -104,6 +267,7 @@ function animateStats() {
 
 runTypewriter();
 updateScrollProgress();
+initDotsCanvas();
 
 /* --- Cursor Spotlight Effect (Dynamic Cursor-Following Highlight for Cards) --- */
 function initSpotlight() {
