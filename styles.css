@@ -463,6 +463,7 @@ a {
 #about {
   background: #ffffff;
   border-top: 1px solid var(--line);
+  padding: clamp(100px, 14vh, 150px) 0;
 }
 
 .section-muted,
@@ -1267,7 +1268,7 @@ h3 {
    ========================================================================== */
 .education-cards {
   width: 100%;
-  max-width: 1140px;
+  max-width: 860px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1280,8 +1281,7 @@ h3 {
   gap: 22px;
   padding: 24px 28px;
   background: var(--surface);
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  border-left: 4px solid var(--accent);
+  border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1292,7 +1292,6 @@ h3 {
 .edu-card:hover {
   transform: translateY(-4px);
   border-color: rgba(var(--accent-rgb), 0.45);
-  border-left-color: var(--accent);
   box-shadow: 0 16px 36px rgba(var(--accent-rgb), 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
@@ -2387,13 +2386,11 @@ h3 {
 [data-theme="dark"] .edu-card {
   background: var(--surface);
   border-color: rgba(36, 51, 71, 0.85);
-  border-left-color: #38bdf8;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="dark"] .edu-card:hover {
   border-color: rgba(56, 189, 248, 0.45);
-  border-left-color: #38bdf8;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(56, 189, 248, 0.12);
 }
 
@@ -2718,7 +2715,6 @@ h3 {
   .edu-card {
     padding: 16px 16px;
     gap: 14px;
-    border-left-width: 3.5px;
   }
 
   .edu-card-icon {
