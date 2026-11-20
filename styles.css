@@ -175,25 +175,24 @@ a {
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* Sleek Top Horizontal Scroll Progress Bar */
+/* Sleek Horizontal Scroll Progress Bar Attached Underneath Nav Bar */
 .scroll-progress-bar {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  bottom: -1px;
   left: 0;
   width: 0%;
-  height: 3.5px;
-  background: linear-gradient(90deg, #0d9488 0%, #0284c7 50%, #6366f1 100%);
-  box-shadow: 0 0 10px rgba(13, 148, 136, 0.55);
-  z-index: 1001;
+  height: 2.5px;
+  background: #0d9488;
+  box-shadow: 0 1px 6px rgba(13, 148, 136, 0.45);
+  z-index: 101;
   pointer-events: none;
   transition: width 0.08s ease-out;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-radius: 0 999px 999px 0;
 }
 
 [data-theme="dark"] .scroll-progress-bar {
-  background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+  background: #38bdf8;
+  box-shadow: 0 1px 8px rgba(56, 189, 248, 0.65);
 }
 
 .nav {
