@@ -214,13 +214,13 @@ function initDotsCanvas() {
     }
 
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-    const dotBaseColor = isDark ? "rgba(148, 163, 184, 0.18)" : "rgba(100, 116, 139, 0.22)";
+    const dotBaseColor = isDark ? "rgba(148, 163, 184, 0.2)" : "rgba(71, 85, 105, 0.28)";
     const accentRgb = isDark ? "56, 189, 248" : "13, 148, 136";
 
     // 1. Draw smooth cursor core & soft glow
     if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && mouse.x <= width && mouse.y <= height) {
       const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 24);
-      glow.addColorStop(0, `rgba(${accentRgb}, 0.22)`);
+      glow.addColorStop(0, `rgba(${accentRgb}, ${isDark ? 0.22 : 0.28})`);
       glow.addColorStop(1, `rgba(${accentRgb}, 0)`);
       ctx.fillStyle = glow;
       ctx.beginPath();
@@ -238,14 +238,14 @@ function initDotsCanvas() {
 
     for (let i = 0; i < dots.length; i++) {
       const d = dots[i];
-      let radius = 0.85;
+      let radius = isDark ? 0.85 : 1.05;
       let color = dotBaseColor;
 
       if (mouse.active && mouse.x >= 0 && mouse.y >= 0) {
         const dist = Math.hypot(mouse.x - d.x, mouse.y - d.y);
         if (dist < influenceRadius) {
           const ratio = 1 - dist / influenceRadius;
-          radius = 0.85 + ratio * 1.4;
+          radius = (isDark ? 0.85 : 1.05) + ratio * 1.5;
           color = `rgba(${accentRgb}, ${0.35 + ratio * 0.5})`;
           nearby.push({ dot: d, dist, ratio });
         }
@@ -263,8 +263,8 @@ function initDotsCanvas() {
       const topCount = Math.min(3, nearby.length);
       for (let k = 0; k < topCount; k++) {
         const item = nearby[k];
-        ctx.strokeStyle = `rgba(${accentRgb}, ${item.ratio * 0.22})`;
-        ctx.lineWidth = 0.75;
+        ctx.strokeStyle = `rgba(${accentRgb}, ${item.ratio * (isDark ? 0.22 : 0.32)})`;
+        ctx.lineWidth = isDark ? 0.75 : 0.9;
         ctx.beginPath();
         ctx.moveTo(mouse.x, mouse.y);
         ctx.lineTo(item.dot.x, item.dot.y);
@@ -279,9 +279,9 @@ function initDotsCanvas() {
           const d2 = nearby[n].dot;
           const dotDist = Math.hypot(d1.x - d2.x, d1.y - d2.y);
           if (dotDist <= maxNeighborDist) {
-            const pairAlpha = Math.min(nearby[m].ratio, nearby[n].ratio) * 0.18;
+            const pairAlpha = Math.min(nearby[m].ratio, nearby[n].ratio) * (isDark ? 0.18 : 0.26);
             ctx.strokeStyle = `rgba(${accentRgb}, ${pairAlpha})`;
-            ctx.lineWidth = 0.65;
+            ctx.lineWidth = isDark ? 0.65 : 0.8;
             ctx.beginPath();
             ctx.moveTo(d1.x, d1.y);
             ctx.lineTo(d2.x, d2.y);

@@ -109,7 +109,7 @@ body {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 main {
@@ -497,7 +497,6 @@ a {
 .section {
   padding: 80px 0;
   position: relative;
-  z-index: 2;
 }
 
 #about {
@@ -611,6 +610,8 @@ a {
   grid-template-columns: 1.15fr 0.85fr;
   gap: 56px;
   align-items: center;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
 .eyebrow {
@@ -977,19 +978,24 @@ h3 {
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 22px;
-  padding: 0 24px;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
+  .skills-grid,
   .projects-grid {
-    padding: 0;
+    max-width: 100%;
+    margin: 0;
   }
 }
 
@@ -1284,7 +1290,7 @@ h3 {
    Education Cards (Clean & Impressive Stack)
    ========================================================================== */
 .education-cards {
-  max-width: 860px;
+  max-width: 960px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1411,7 +1417,17 @@ h3 {
 .cert-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 22px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .cert-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    margin: 0;
+  }
 }
 
 .cert-card {
@@ -1511,6 +1527,8 @@ h3 {
   grid-template-columns: 1fr 1.15fr;
   gap: 52px;
   align-items: start;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
 .contact-info-col {
@@ -1638,46 +1656,116 @@ h3 {
   flex-shrink: 0;
 }
 
-/* Unified Theme-Aligned Social Card Hovers */
-.contact-social-card:hover {
+/* GitHub Authentic Symbol & Card Hover */
+.contact-social-card.github-card .github-icon {
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--text);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.contact-social-card.github-card:hover {
   transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: 0 14px 32px rgba(var(--accent-rgb), 0.16);
+  border-color: rgba(15, 23, 42, 0.35);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
 }
 
-.contact-social-card:hover .contact-social-icon {
-  background: var(--accent);
+.contact-social-card.github-card:hover .github-icon,
+.contact-social-card.github-card .github-icon:hover {
+  background: #181717;
   color: #ffffff;
-  transform: scale(1.08);
+  border-color: #181717;
+  transform: scale(1.15);
+  box-shadow: 0 6px 18px rgba(24, 23, 23, 0.35);
 }
 
-.contact-social-card:hover .social-tag {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.contact-social-card:hover .social-action-arrow {
+.contact-social-card.github-card:hover .social-action-arrow {
   transform: translate(3px, -3px);
-  color: var(--accent);
+  color: #181717;
 }
 
-[data-theme="dark"] .contact-social-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 16px rgba(56, 189, 248, 0.2);
+[data-theme="dark"] .contact-social-card.github-card .github-icon {
+  background: rgba(240, 246, 252, 0.08);
+  color: #f0f6fc;
+  border-color: rgba(240, 246, 252, 0.15);
 }
 
-[data-theme="dark"] .contact-social-card:hover .contact-social-icon {
-  background: var(--accent);
-  color: #0b0f17;
+[data-theme="dark"] .contact-social-card.github-card:hover {
+  border-color: rgba(240, 246, 252, 0.4);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6);
 }
 
-[data-theme="dark"] .contact-social-card:hover .social-tag {
-  background: rgba(56, 189, 248, 0.16);
-  color: var(--accent);
+[data-theme="dark"] .contact-social-card.github-card:hover .github-icon,
+[data-theme="dark"] .contact-social-card.github-card .github-icon:hover {
+  background: #f0f6fc;
+  color: #0d1117;
+  border-color: #f0f6fc;
+  transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.28);
 }
 
-[data-theme="dark"] .contact-social-card:hover .social-action-arrow {
-  color: var(--accent);
+[data-theme="dark"] .contact-social-card.github-card:hover .social-action-arrow {
+  color: #f0f6fc;
+}
+
+/* LinkedIn Authentic Symbol & Card Hover */
+.contact-social-card.linkedin-card .linkedin-icon {
+  background: rgba(10, 102, 194, 0.09);
+  color: #0a66c2;
+  border: 1px solid rgba(10, 102, 194, 0.2);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.contact-social-card.linkedin-card:hover {
+  transform: translateY(-4px);
+  border-color: #0a66c2;
+  box-shadow: 0 14px 32px rgba(10, 102, 194, 0.18);
+}
+
+.contact-social-card.linkedin-card:hover .linkedin-icon,
+.contact-social-card.linkedin-card .linkedin-icon:hover {
+  background: #0a66c2;
+  color: #ffffff;
+  border-color: #0a66c2;
+  transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(10, 102, 194, 0.45);
+}
+
+.contact-social-card.linkedin-card:hover .social-action-arrow {
+  transform: translate(3px, -3px);
+  color: #0a66c2;
+}
+
+[data-theme="dark"] .contact-social-card.linkedin-card .linkedin-icon {
+  background: rgba(10, 102, 194, 0.15);
+  color: #70b5f9;
+  border-color: rgba(10, 102, 194, 0.35);
+}
+
+[data-theme="dark"] .contact-social-card.linkedin-card:hover {
+  border-color: #0a66c2;
+  box-shadow: 0 14px 32px rgba(10, 102, 194, 0.35);
+}
+
+[data-theme="dark"] .contact-social-card.linkedin-card:hover .linkedin-icon,
+[data-theme="dark"] .contact-social-card.linkedin-card .linkedin-icon:hover {
+  background: #0a66c2;
+  color: #ffffff;
+  border-color: #0a66c2;
+  transform: scale(1.15);
+  box-shadow: 0 6px 22px rgba(10, 102, 194, 0.55);
+}
+
+[data-theme="dark"] .contact-social-card.linkedin-card:hover .social-action-arrow {
+  color: #70b5f9;
 }
 
 /* Form Column & Card */
