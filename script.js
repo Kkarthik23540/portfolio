@@ -22,6 +22,7 @@ const contactForm = document.querySelector("#contactForm");
 const typewriter = document.querySelector(".typewriter");
 const scrollBrick = document.querySelector("#scrollBrick");
 const scrollTrack = document.querySelector(".vertical-scroll-track");
+const scrollDots = document.querySelectorAll(".scroll-dot");
 const statElements = document.querySelectorAll(".stat-number");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -41,41 +42,50 @@ function updateScrollProgress() {
   scrollBrick.style.transform = `translateY(${progress * maxTravel}px)`;
 }
 
-function runTypewriter() {
-  const line1 = document.querySelector(".name-line-1");
-  const line2 = document.querySelector(".name-line-2");
-  if (!line1 || !line2) return;
+function setActiveSection(id) {
+  navItems.forEach((item) => {
+    item.classList.toggle("active", item.getAttribute("href") === `#${id}`);
+  });
+  scrollDots.forEach((dot) => {
+    dot.classList.toggle("active", dot.getAttribute("href") === `#${id}`);
+  });
+}
 
-  const text1 = line1.dataset.text || line1.textContent.trim() || "K Karthik";
-  const text2 = line2.dataset.text || line2.textContent.trim() || "Reddy";
+if (scrollDots.length > 0) {
+  scrollDots.forEach((dot) => {
+    dot.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetId = dot.getAttribute("href");
+      if (!targetId) return;
+      const targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        const targetTop = targetSection.getBoundingClientRect().top + window.scrollY - 70;
+        window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+      }
+    });
+  });
+}
+
+function runTypewriter() {
+  if (!typewriter) return;
+
+  const fullText = typewriter.dataset.text || typewriter.textContent.trim() || "K Karthik Reddy";
 
   if (reducedMotion) {
-    line1.textContent = text1;
-    line2.textContent = text2;
+    typewriter.textContent = fullText;
     return;
   }
 
-  line1.textContent = "";
-  line2.textContent = "";
-  line1.classList.add("typing");
+  typewriter.textContent = "";
+  typewriter.classList.add("typing");
 
-  const speed = 75;
+  const speed = 70;
 
-  [...text1].forEach((character, index) => {
+  [...fullText].forEach((character, index) => {
     window.setTimeout(() => {
-      line1.textContent += character;
-      if (index === text1.length - 1) {
-        line1.classList.remove("typing");
-        line2.classList.add("typing");
-
-        [...text2].forEach((char2, index2) => {
-          window.setTimeout(() => {
-            line2.textContent += char2;
-            if (index2 === text2.length - 1) {
-              window.setTimeout(() => line2.classList.remove("typing"), 1200);
-            }
-          }, (index2 + 1) * speed);
-        });
+      typewriter.textContent += character;
+      if (index === fullText.length - 1) {
+        window.setTimeout(() => typewriter.classList.remove("typing"), 1400);
       }
     }, (index + 1) * speed);
   });
@@ -91,8 +101,8 @@ function initDotsCanvas() {
   let height = 0;
   let dpr = 1;
   let dots = [];
-  const gridSpacing = 28;
-  const maxDistance = 115;
+  const gridSpacing = 32;
+  const maxDistance = 70;
 
   const mouse = {
     x: -9999,
@@ -158,31 +168,31 @@ function initDotsCanvas() {
     ctx.clearRect(0, 0, width, height);
 
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-    const dotBaseColor = isDark ? "rgba(148, 163, 184, 0.22)" : "rgba(100, 116, 139, 0.28)";
-    const accentLineRgb = isDark ? "56, 189, 248" : "79, 70, 229";
-    const ballRgb = isDark ? "56, 189, 248" : "79, 70, 229";
+    const dotBaseColor = isDark ? "rgba(148, 163, 184, 0.2)" : "rgba(100, 116, 139, 0.22)";
+    const accentLineRgb = isDark ? "56, 189, 248" : "13, 148, 136";
+    const ballRgb = isDark ? "56, 189, 248" : "13, 148, 136";
 
-    // 1. Draw glowing cursor ball when mouse is active in viewport
+    // 1. Draw gentle glowing cursor ball when mouse is active in viewport
     if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && mouse.x <= width && mouse.y <= height) {
-      const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 44);
-      glow.addColorStop(0, `rgba(${ballRgb}, 0.28)`);
+      const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 22);
+      glow.addColorStop(0, `rgba(${ballRgb}, 0.2)`);
       glow.addColorStop(1, `rgba(${ballRgb}, 0)`);
       ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 44, 0, Math.PI * 2);
+      ctx.arc(mouse.x, mouse.y, 22, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = `rgb(${ballRgb})`;
       ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 3.5, 0, Math.PI * 2);
+      ctx.arc(mouse.x, mouse.y, 2.5, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // 2. Draw connections and dots
+    // 2. Draw connections and dots (light, subtle, clean whisper of lines)
     for (let i = 0; i < dots.length; i++) {
       const d = dots[i];
       let currentDotColor = dotBaseColor;
-      let currentRadius = 0.95;
+      let currentRadius = 0.85;
 
       if (mouse.active && mouse.x >= 0 && mouse.y >= 0) {
         const dx = mouse.x - d.x;
@@ -192,19 +202,19 @@ function initDotsCanvas() {
         if (dist < maxDistance) {
           const ratio = 1 - dist / maxDistance;
 
-          ctx.strokeStyle = `rgba(${accentLineRgb}, ${ratio * 0.52})`;
-          ctx.lineWidth = ratio * 1.15;
+          ctx.strokeStyle = `rgba(${accentLineRgb}, ${ratio * 0.16})`;
+          ctx.lineWidth = 0.75;
           ctx.beginPath();
           ctx.moveTo(mouse.x, mouse.y);
           ctx.lineTo(d.x, d.y);
           ctx.stroke();
 
-          const pull = ratio * 3.2;
+          const pull = ratio * 1.8;
           d.x = d.originX + (dx / dist) * pull;
           d.y = d.originY + (dy / dist) * pull;
 
-          currentDotColor = `rgba(${accentLineRgb}, ${0.5 + ratio * 0.5})`;
-          currentRadius = 1.6;
+          currentDotColor = `rgba(${accentLineRgb}, ${0.35 + ratio * 0.45})`;
+          currentRadius = 1.25;
         } else {
           d.x += (d.originX - d.x) * 0.1;
           d.y += (d.originY - d.y) * 0.1;
@@ -426,10 +436,7 @@ if ("IntersectionObserver" in window) {
 
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-
-        navItems.forEach((item) => {
-          item.classList.toggle("active", item.getAttribute("href") === `#${entry.target.id}`);
-        });
+        setActiveSection(entry.target.id);
       });
     },
     { rootMargin: "-30% 0px -40% 0px" }
@@ -450,11 +457,9 @@ function onScroll() {
     window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 30;
 
   if (atBottom) {
-    navItems.forEach((item) => {
-      item.classList.toggle("active", item.getAttribute("href") === "#contact");
-    });
+    setActiveSection("contact");
   } else if (window.scrollY < 120) {
-    navItems.forEach((item) => item.classList.remove("active"));
+    setActiveSection("home");
   }
 
   if (backToTop) {
