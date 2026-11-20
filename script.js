@@ -101,6 +101,28 @@ function animateStats() {
 runTypewriter();
 updateScrollProgress();
 
+/* --- Cursor Spotlight Effect (Dynamic Cursor-Following Highlight for Cards) --- */
+function initSpotlight() {
+  const cards = document.querySelectorAll(
+    ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel"
+  );
+  cards.forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.removeProperty("--mouse-x");
+      card.style.removeProperty("--mouse-y");
+    });
+  });
+}
+
+initSpotlight();
+
 /* --- Theme Toggle & Preferences --- */
 function getActiveTheme() {
   return document.documentElement.getAttribute("data-theme") || "light";
