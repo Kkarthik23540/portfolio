@@ -148,22 +148,10 @@ a {
 }
 
 .container {
-  width: min(1380px, calc(100% - 64px));
+  width: min(1200px, calc(100% - 48px));
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
-}
-
-@media (min-width: 1600px) {
-  .container {
-    width: min(1480px, calc(100% - 80px));
-  }
-}
-
-@media (max-width: 1024px) {
-  .container {
-    width: calc(100% - 48px);
-  }
 }
 
 @media (max-width: 768px) {
@@ -933,7 +921,7 @@ h3 {
 }
 
 .section-heading {
-  max-width: 800px;
+  max-width: 650px;
   margin-bottom: 34px;
 }
 
@@ -1516,7 +1504,7 @@ h3 {
   line-height: 1.65;
   color: var(--muted);
   margin: 0;
-  max-width: 520px;
+  max-width: 460px;
 }
 
 /* Social Cards with Authentic Brand Hover */
