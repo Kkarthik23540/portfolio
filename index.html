@@ -24,6 +24,23 @@
     <title>K Karthik Reddy | Portfolio</title>
     <link rel="canonical" href="https://kurmathikarthikreddy-portfolio.vercel.app/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var theme = saved || (prefersDark ? "dark" : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      html[data-theme="dark"],
+      html[data-theme="dark"] body {
+        background-color: #070b14 !important;
+        color: #f8fafc !important;
+      }
+    </style>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -51,7 +68,7 @@
     <canvas id="dotsCanvas" class="dots-canvas" aria-hidden="true"></canvas>
     <header class="site-header" id="top">
       <nav class="nav container" aria-label="Main navigation">
-        <a class="brand" href="#home" aria-label="K Karthik Reddy home">
+        <a class="brand" href="#home" id="brandLogo" aria-label="K Karthik Reddy home">
           <span class="brand-mark">KR</span>
           <span>K Karthik Reddy</span>
         </a>
@@ -326,7 +343,6 @@
                   </p>
                   <div class="edu-grade-row">
                     <span class="edu-badge edu-grade-badge">
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                       CGPA: 7.82
                     </span>
                   </div>
@@ -356,7 +372,6 @@
                   </p>
                   <div class="edu-grade-row">
                     <span class="edu-badge edu-grade-badge">
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                       Marks: 972 / 1000
                     </span>
                   </div>
@@ -386,7 +401,6 @@
                   </p>
                   <div class="edu-grade-row">
                     <span class="edu-badge edu-grade-badge">
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                       CGPA: 8.5
                     </span>
                   </div>
@@ -552,7 +566,6 @@
               >
                 <div class="form-card-header">
                   <h3>Send a Message</h3>
-                  <span class="response-badge"><span class="badge-dot"></span>Active inbox</span>
                 </div>
 
                 <div class="form-row">

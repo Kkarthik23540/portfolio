@@ -109,14 +109,21 @@ body {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
 }
 
-main,
-header,
+main {
+  position: relative;
+}
+
+header {
+  position: relative;
+  z-index: 100;
+}
+
 footer {
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 .container,
@@ -129,10 +136,11 @@ footer {
 .cert-card,
 .contact-info-col,
 .contact-form,
+.contact-social-card,
 .vertical-scroll-nav,
 .back-to-top {
   position: relative;
-  z-index: 3;
+  z-index: 10;
 }
 
 a {
@@ -183,22 +191,25 @@ a {
 
 .vertical-scroll-track {
   position: relative;
-  width: 5px;
+  width: 6px;
   height: 150px;
   background: rgba(148, 163, 184, 0.25);
   border-radius: 999px;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
   overflow: hidden;
   transition: width 0.2s ease, background-color 0.2s ease;
 }
 
 [data-theme="dark"] .vertical-scroll-track {
-  background: rgba(148, 163, 184, 0.16);
+  background: rgba(148, 163, 184, 0.2);
 }
 
-.vertical-scroll-track:hover {
-  width: 7px;
-  background: rgba(148, 163, 184, 0.38);
+.vertical-scroll-track:hover,
+.vertical-scroll-track.is-dragging {
+  width: 8px;
+  background: rgba(148, 163, 184, 0.42);
 }
 
 .vertical-scroll-brick {
@@ -212,8 +223,12 @@ a {
   box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
   transform: translateY(0);
   will-change: transform;
-  transition: transform 0.08s linear;
-  pointer-events: none;
+  cursor: grab;
+}
+
+.vertical-scroll-track.is-dragging .vertical-scroll-brick {
+  cursor: grabbing;
+  box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.85);
 }
 
 [data-theme="dark"] .vertical-scroll-brick {
@@ -481,66 +496,80 @@ a {
 
 .section {
   padding: 80px 0;
+  position: relative;
+  z-index: 2;
 }
 
 #about {
-  background: var(--surface);
-  position: relative;
-  z-index: 1;
+  background: #ffffff;
+  border-top: 1px solid var(--line);
 }
 
 .section-muted,
 #skills {
   background: #f8fafc;
-  position: relative;
-  z-index: 1;
+  border-top: 1px solid var(--line);
 }
 
 #education {
-  background: var(--surface);
-  position: relative;
-  z-index: 1;
+  background: #ffffff;
+  border-top: 1px solid var(--line);
 }
 
 #projects {
   background: #f8fafc;
-  position: relative;
-  z-index: 1;
+  border-top: 1px solid var(--line);
 }
 
 #certifications {
-  background: var(--surface);
-  position: relative;
-  z-index: 1;
+  background: #ffffff;
+  border-top: 1px solid var(--line);
 }
 
 .contact-section {
   background: #f8fafc;
-  position: relative;
-  z-index: 1;
+  border-top: 1px solid var(--line);
 }
 
 .site-footer {
   background: #f1f5f9;
-  position: relative;
-  z-index: 1;
+  border-top: 1px solid var(--line);
 }
 
-[data-theme="dark"] #about,
-[data-theme="dark"] #education,
-[data-theme="dark"] #certifications {
-  background: #0d131f;
+[data-theme="dark"] #about {
+  background: #0e172a;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 [data-theme="dark"] .section-muted,
-[data-theme="dark"] #skills,
-[data-theme="dark"] #projects {
-  background: #080d17;
+[data-theme="dark"] #skills {
+  background: #080d1a;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-[data-theme="dark"] .contact-section,
+[data-theme="dark"] #education {
+  background: #111c34;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] #projects {
+  background: #080d1a;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] #certifications {
+  background: #0e172a;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .contact-section {
+  background: #060a14;
+  border-top: 1px solid rgba(56, 189, 248, 0.12);
+}
+
 [data-theme="dark"] .site-footer {
-  background: #060911;
+  background: #04070d;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .hero {
@@ -945,15 +974,23 @@ h3 {
   color: var(--muted);
 }
 
-.skills-grid,
-.projects-grid {
+.skills-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 
 .projects-grid {
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    padding: 0;
+  }
 }
 
 .skill-card {
@@ -1259,9 +1296,7 @@ h3 {
   align-items: flex-start;
   gap: 22px;
   padding: 24px 28px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--surface);
   border: 1px solid rgba(226, 232, 240, 0.95);
   border-left: 4px solid var(--accent);
   border-radius: 16px;
@@ -1603,88 +1638,46 @@ h3 {
   flex-shrink: 0;
 }
 
-/* GitHub Authentic Brand Hover */
-.contact-social-card.github-card:hover {
-  transform: translateY(-3px);
-  border-color: #24292e;
-  box-shadow: 0 14px 32px rgba(36, 41, 46, 0.15);
+/* Unified Theme-Aligned Social Card Hovers */
+.contact-social-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 32px rgba(var(--accent-rgb), 0.16);
 }
 
-.contact-social-card.github-card:hover .github-icon {
-  background: #24292e;
+.contact-social-card:hover .contact-social-icon {
+  background: var(--accent);
   color: #ffffff;
   transform: scale(1.08);
 }
 
-.contact-social-card.github-card:hover .social-tag {
-  background: rgba(36, 41, 46, 0.08);
-  color: #24292e;
+.contact-social-card:hover .social-tag {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
-.contact-social-card.github-card:hover .social-action-arrow {
+.contact-social-card:hover .social-action-arrow {
   transform: translate(3px, -3px);
-  color: #24292e;
+  color: var(--accent);
 }
 
-[data-theme="dark"] .contact-social-card.github-card:hover {
-  border-color: rgba(240, 246, 252, 0.45);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6), 0 0 16px rgba(255, 255, 255, 0.08);
+[data-theme="dark"] .contact-social-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 16px rgba(56, 189, 248, 0.2);
 }
 
-[data-theme="dark"] .contact-social-card.github-card:hover .github-icon {
-  background: #f0f6fc;
-  color: #0d1117;
+[data-theme="dark"] .contact-social-card:hover .contact-social-icon {
+  background: var(--accent);
+  color: #0b0f17;
 }
 
-[data-theme="dark"] .contact-social-card.github-card:hover .social-tag {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f0f6fc;
+[data-theme="dark"] .contact-social-card:hover .social-tag {
+  background: rgba(56, 189, 248, 0.16);
+  color: var(--accent);
 }
 
-[data-theme="dark"] .contact-social-card.github-card:hover .social-action-arrow {
-  color: #f0f6fc;
-}
-
-/* LinkedIn Authentic Brand Hover */
-.contact-social-card.linkedin-card:hover {
-  transform: translateY(-3px);
-  border-color: #0a66c2;
-  box-shadow: 0 14px 32px rgba(10, 102, 194, 0.2);
-}
-
-.contact-social-card.linkedin-card:hover .linkedin-icon {
-  background: #0a66c2;
-  color: #ffffff;
-  transform: scale(1.08);
-}
-
-.contact-social-card.linkedin-card:hover .social-tag {
-  background: rgba(10, 102, 194, 0.08);
-  color: #0a66c2;
-}
-
-.contact-social-card.linkedin-card:hover .social-action-arrow {
-  transform: translate(3px, -3px);
-  color: #0a66c2;
-}
-
-[data-theme="dark"] .contact-social-card.linkedin-card:hover {
-  border-color: #0a66c2;
-  box-shadow: 0 14px 32px rgba(10, 102, 194, 0.35);
-}
-
-[data-theme="dark"] .contact-social-card.linkedin-card:hover .linkedin-icon {
-  background: #0a66c2;
-  color: #ffffff;
-}
-
-[data-theme="dark"] .contact-social-card.linkedin-card:hover .social-tag {
-  background: rgba(10, 102, 194, 0.2);
-  color: #70b5f9;
-}
-
-[data-theme="dark"] .contact-social-card.linkedin-card:hover .social-action-arrow {
-  color: #70b5f9;
+[data-theme="dark"] .contact-social-card:hover .social-action-arrow {
+  color: var(--accent);
 }
 
 /* Form Column & Card */
@@ -2328,7 +2321,7 @@ h3 {
 }
 
 [data-theme="dark"] .edu-card {
-  background: rgba(17, 24, 39, 0.85);
+  background: var(--surface);
   border-color: rgba(36, 51, 71, 0.85);
   border-left-color: #38bdf8;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);

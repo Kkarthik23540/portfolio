@@ -22,10 +22,21 @@ const contactForm = document.querySelector("#contactForm");
 const typewriter = document.querySelector(".typewriter");
 const scrollBrick = document.querySelector("#scrollBrick");
 const scrollTrack = document.querySelector("#scrollTrack");
+const brandLogo = document.querySelector("#brandLogo") || document.querySelector(".brand");
 const statElements = document.querySelectorAll(".stat-number");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let statsAnimated = false;
+
+if (brandLogo) {
+  brandLogo.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (window.location.hash) {
+      history.pushState(null, "", window.location.pathname);
+    }
+  });
+}
 
 function updateScrollProgress() {
   if (!scrollBrick || !scrollTrack) return;
@@ -48,25 +59,46 @@ function setActiveSection(id) {
 }
 
 if (scrollTrack) {
-  const sectionList = Array.from(document.querySelectorAll("main section[id]"));
-  scrollTrack.addEventListener("click", (e) => {
+  let isDraggingScroll = false;
+
+  function handleScrollDrag(clientY) {
     const rect = scrollTrack.getBoundingClientRect();
-    const clickY = e.clientY - rect.top;
-    const ratio = Math.max(0, Math.min(1, clickY / rect.height));
+    const trackHeight = rect.height;
+    const brickHeight = scrollBrick ? scrollBrick.clientHeight : 28;
+    const travel = trackHeight - brickHeight;
+    if (travel <= 0) return;
 
-    if (sectionList.length > 0) {
-      const targetIndex = Math.min(sectionList.length - 1, Math.floor(ratio * sectionList.length));
-      const targetSection = sectionList[targetIndex];
-      if (targetSection) {
-        const targetTop = targetSection.getBoundingClientRect().top + window.scrollY - 70;
-        window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
-        return;
-      }
-    }
+    const relativeY = clientY - rect.top - brickHeight / 2;
+    const progress = Math.max(0, Math.min(1, relativeY / travel));
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: progress * maxScroll, behavior: "auto" });
+  }
 
-    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({ top: ratio * scrollHeight, behavior: "smooth" });
+  scrollTrack.addEventListener("pointerdown", (e) => {
+    isDraggingScroll = true;
+    scrollTrack.classList.add("is-dragging");
+    try {
+      scrollTrack.setPointerCapture(e.pointerId);
+    } catch (err) {}
+    handleScrollDrag(e.clientY);
   });
+
+  scrollTrack.addEventListener("pointermove", (e) => {
+    if (!isDraggingScroll) return;
+    handleScrollDrag(e.clientY);
+  });
+
+  const stopDrag = (e) => {
+    if (!isDraggingScroll) return;
+    isDraggingScroll = false;
+    scrollTrack.classList.remove("is-dragging");
+    try {
+      scrollTrack.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+  };
+
+  scrollTrack.addEventListener("pointerup", stopDrag);
+  scrollTrack.addEventListener("pointercancel", stopDrag);
 }
 
 function runTypewriter() {
@@ -144,22 +176,28 @@ function initDotsCanvas() {
   window.addEventListener("resize", resize, { passive: true });
   resize();
 
-  window.addEventListener("pointermove", (e) => {
-    mouse.targetX = e.clientX;
-    mouse.targetY = e.clientY;
-    mouse.active = true;
-  }, { passive: true });
+  function updatePointer(e) {
+    const overBox = e.target && e.target.closest && e.target.closest(
+      ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-form, .contact-social-card, nav, .site-header, .stat-chip, button, a, input, textarea"
+    );
+    if (overBox) {
+      mouse.active = false;
+      mouse.x = -9999;
+      mouse.y = -9999;
+    } else {
+      mouse.active = true;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    }
+  }
 
-  window.addEventListener("pointerdown", (e) => {
-    mouse.targetX = e.clientX;
-    mouse.targetY = e.clientY;
-    mouse.active = true;
-  }, { passive: true });
+  window.addEventListener("pointermove", updatePointer, { passive: true });
+  window.addEventListener("pointerdown", updatePointer, { passive: true });
 
   window.addEventListener("pointerleave", () => {
     mouse.active = false;
-    mouse.targetX = -9999;
-    mouse.targetY = -9999;
+    mouse.x = -9999;
+    mouse.y = -9999;
   });
 
   function render() {
@@ -170,16 +208,7 @@ function initDotsCanvas() {
 
     ctx.clearRect(0, 0, width, height);
 
-    // Silky smooth mouse interpolation
-    if (mouse.active) {
-      if (mouse.x < -1000) {
-        mouse.x = mouse.targetX;
-        mouse.y = mouse.targetY;
-      } else {
-        mouse.x += (mouse.targetX - mouse.x) * 0.18;
-        mouse.y += (mouse.targetY - mouse.y) * 0.18;
-      }
-    } else {
+    if (!mouse.active) {
       mouse.x = -9999;
       mouse.y = -9999;
     }
