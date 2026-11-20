@@ -137,7 +137,6 @@ footer {
 .contact-info-col,
 .contact-form,
 .contact-social-card,
-.vertical-scroll-nav,
 .back-to-top {
   position: relative;
   z-index: 10;
@@ -176,76 +175,25 @@ a {
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* Previous sleek vertical scroll indicator (interactive: click anywhere to navigate) */
-.vertical-scroll-nav {
+/* Sleek Top Horizontal Scroll Progress Bar */
+.scroll-progress-bar {
   position: fixed;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-}
-
-.vertical-scroll-track {
-  position: relative;
-  width: 6px;
-  height: 150px;
-  background: rgba(148, 163, 184, 0.25);
-  border-radius: 999px;
-  cursor: pointer;
-  touch-action: none;
-  user-select: none;
-  overflow: hidden;
-  transition: width 0.2s ease, background-color 0.2s ease;
-}
-
-[data-theme="dark"] .vertical-scroll-track {
-  background: rgba(148, 163, 184, 0.2);
-}
-
-.vertical-scroll-track:hover,
-.vertical-scroll-track.is-dragging {
-  width: 8px;
-  background: rgba(148, 163, 184, 0.42);
-}
-
-.vertical-scroll-brick {
-  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 28px;
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
-  border-radius: 999px;
-  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
-  transform: translateY(0);
-  will-change: transform;
-  cursor: grab;
+  width: 0%;
+  height: 3.5px;
+  background: linear-gradient(90deg, #0d9488 0%, #0284c7 50%, #6366f1 100%);
+  box-shadow: 0 0 10px rgba(13, 148, 136, 0.55);
+  z-index: 1001;
+  pointer-events: none;
+  transition: width 0.08s ease-out;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
-.vertical-scroll-track.is-dragging .vertical-scroll-brick {
-  cursor: grabbing;
-  box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.85);
-}
-
-[data-theme="dark"] .vertical-scroll-brick {
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.65);
-}
-
-@media (max-width: 768px) {
-  .vertical-scroll-nav {
-    right: 8px;
-  }
-  .vertical-scroll-track {
-    height: 100px;
-    width: 3.5px;
-  }
-  .vertical-scroll-brick {
-    height: 18px;
-  }
+[data-theme="dark"] .scroll-progress-bar {
+  background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
 }
 
 .nav {
@@ -600,7 +548,7 @@ a {
   grid-template-columns: 1.15fr 0.85fr;
   gap: 48px;
   align-items: center;
-  max-width: 1140px;
+  max-width: 1220px;
   margin: 0 auto;
   width: 100%;
 }
@@ -610,7 +558,7 @@ a {
   grid-template-columns: 1.15fr 0.85fr;
   gap: 56px;
   align-items: center;
-  max-width: 1040px;
+  max-width: 1220px;
   margin: 0 auto;
 }
 
@@ -979,7 +927,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  max-width: 1000px;
+  max-width: 1220px;
   margin: 0 auto;
 }
 
@@ -987,7 +935,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 22px;
-  max-width: 1040px;
+  max-width: 1220px;
   margin: 0 auto;
 }
 
@@ -1290,7 +1238,7 @@ h3 {
    Education Cards (Clean & Impressive Stack)
    ========================================================================== */
 .education-cards {
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1418,7 +1366,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 22px;
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -1518,7 +1466,7 @@ h3 {
 }
 
 .contact-container {
-  max-width: 1180px;
+  max-width: 1220px;
   margin: 0 auto;
 }
 
@@ -1527,7 +1475,7 @@ h3 {
   grid-template-columns: 1fr 1.15fr;
   gap: 52px;
   align-items: start;
-  max-width: 1040px;
+  max-width: 1220px;
   margin: 0 auto;
 }
 

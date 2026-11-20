@@ -20,8 +20,7 @@ const revealItems = document.querySelectorAll(".reveal");
 const sections = document.querySelectorAll("main section[id]");
 const contactForm = document.querySelector("#contactForm");
 const typewriter = document.querySelector(".typewriter");
-const scrollBrick = document.querySelector("#scrollBrick");
-const scrollTrack = document.querySelector("#scrollTrack");
+const scrollProgressBar = document.querySelector("#scrollProgressBar");
 const brandLogo = document.querySelector("#brandLogo") || document.querySelector(".brand");
 const statElements = document.querySelectorAll(".stat-number");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -39,66 +38,20 @@ if (brandLogo) {
 }
 
 function updateScrollProgress() {
-  if (!scrollBrick || !scrollTrack) return;
+  if (!scrollProgressBar) return;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
   if (scrollHeight <= 0) {
-    scrollBrick.style.transform = "translateY(0)";
+    scrollProgressBar.style.width = "0%";
     return;
   }
-  const trackHeight = scrollTrack.clientHeight;
-  const brickHeight = scrollBrick.clientHeight;
-  const maxTravel = trackHeight - brickHeight;
   const progress = Math.min(1, Math.max(0, window.scrollY / scrollHeight));
-  scrollBrick.style.transform = `translateY(${progress * maxTravel}px)`;
+  scrollProgressBar.style.width = `${progress * 100}%`;
 }
 
 function setActiveSection(id) {
   navItems.forEach((item) => {
     item.classList.toggle("active", item.getAttribute("href") === `#${id}`);
   });
-}
-
-if (scrollTrack) {
-  let isDraggingScroll = false;
-
-  function handleScrollDrag(clientY) {
-    const rect = scrollTrack.getBoundingClientRect();
-    const trackHeight = rect.height;
-    const brickHeight = scrollBrick ? scrollBrick.clientHeight : 28;
-    const travel = trackHeight - brickHeight;
-    if (travel <= 0) return;
-
-    const relativeY = clientY - rect.top - brickHeight / 2;
-    const progress = Math.max(0, Math.min(1, relativeY / travel));
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({ top: progress * maxScroll, behavior: "auto" });
-  }
-
-  scrollTrack.addEventListener("pointerdown", (e) => {
-    isDraggingScroll = true;
-    scrollTrack.classList.add("is-dragging");
-    try {
-      scrollTrack.setPointerCapture(e.pointerId);
-    } catch (err) {}
-    handleScrollDrag(e.clientY);
-  });
-
-  scrollTrack.addEventListener("pointermove", (e) => {
-    if (!isDraggingScroll) return;
-    handleScrollDrag(e.clientY);
-  });
-
-  const stopDrag = (e) => {
-    if (!isDraggingScroll) return;
-    isDraggingScroll = false;
-    scrollTrack.classList.remove("is-dragging");
-    try {
-      scrollTrack.releasePointerCapture(e.pointerId);
-    } catch (err) {}
-  };
-
-  scrollTrack.addEventListener("pointerup", stopDrag);
-  scrollTrack.addEventListener("pointercancel", stopDrag);
 }
 
 function runTypewriter() {
@@ -173,10 +126,46 @@ function initDotsCanvas() {
     }
   }
 
+  let cardRects = [];
+
+  function updateCardRects() {
+    const cards = document.querySelectorAll(
+      ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-form, .contact-social-card, .site-header"
+    );
+    cardRects = [];
+    for (let i = 0; i < cards.length; i++) {
+      const r = cards[i].getBoundingClientRect();
+      if (r.width > 0 && r.height > 0 && r.bottom >= 0 && r.top <= height) {
+        cardRects.push({
+          left: r.left - 2,
+          right: r.right + 2,
+          top: r.top - 2,
+          bottom: r.bottom + 2
+        });
+      }
+    }
+  }
+
+  function isInsideCard(x, y) {
+    for (let i = 0; i < cardRects.length; i++) {
+      const r = cardRects[i];
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   window.addEventListener("resize", resize, { passive: true });
   resize();
 
   function updatePointer(e) {
+    if (isInsideCard(e.clientX, e.clientY)) {
+      mouse.active = false;
+      mouse.x = -9999;
+      mouse.y = -9999;
+      return;
+    }
     const overBox = e.target && e.target.closest && e.target.closest(
       ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-form, .contact-social-card, nav, .site-header, .stat-chip, button, a, input, textarea"
     );
@@ -208,6 +197,14 @@ function initDotsCanvas() {
 
     ctx.clearRect(0, 0, width, height);
 
+    updateCardRects();
+
+    if (isInsideCard(mouse.x, mouse.y)) {
+      mouse.active = false;
+      mouse.x = -9999;
+      mouse.y = -9999;
+    }
+
     if (!mouse.active) {
       mouse.x = -9999;
       mouse.y = -9999;
@@ -218,7 +215,7 @@ function initDotsCanvas() {
     const accentRgb = isDark ? "56, 189, 248" : "13, 148, 136";
 
     // 1. Draw smooth cursor core & soft glow
-    if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && mouse.x <= width && mouse.y <= height) {
+    if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && mouse.x <= width && mouse.y <= height && !isInsideCard(mouse.x, mouse.y)) {
       const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 24);
       glow.addColorStop(0, `rgba(${accentRgb}, ${isDark ? 0.22 : 0.28})`);
       glow.addColorStop(1, `rgba(${accentRgb}, 0)`);
@@ -238,10 +235,14 @@ function initDotsCanvas() {
 
     for (let i = 0; i < dots.length; i++) {
       const d = dots[i];
+      if (isInsideCard(d.x, d.y)) {
+        continue;
+      }
+
       let radius = isDark ? 0.85 : 1.05;
       let color = dotBaseColor;
 
-      if (mouse.active && mouse.x >= 0 && mouse.y >= 0) {
+      if (mouse.active && mouse.x >= 0 && mouse.y >= 0 && !isInsideCard(mouse.x, mouse.y)) {
         const dist = Math.hypot(mouse.x - d.x, mouse.y - d.y);
         if (dist < influenceRadius) {
           const ratio = 1 - dist / influenceRadius;
@@ -258,11 +259,12 @@ function initDotsCanvas() {
     }
 
     // Connect mouse to the top 2-3 closest dots with gentle soft lines
-    if (nearby.length > 0) {
+    if (nearby.length > 0 && !isInsideCard(mouse.x, mouse.y)) {
       nearby.sort((a, b) => a.dist - b.dist);
       const topCount = Math.min(3, nearby.length);
       for (let k = 0; k < topCount; k++) {
         const item = nearby[k];
+        if (isInsideCard(item.dot.x, item.dot.y)) continue;
         ctx.strokeStyle = `rgba(${accentRgb}, ${item.ratio * (isDark ? 0.22 : 0.32)})`;
         ctx.lineWidth = isDark ? 0.75 : 0.9;
         ctx.beginPath();
@@ -274,7 +276,9 @@ function initDotsCanvas() {
       // Connect adjacent nearby dots to each other (organic constellation mesh)
       const maxNeighborDist = gridSpacing * 1.45;
       for (let m = 0; m < nearby.length; m++) {
+        if (isInsideCard(nearby[m].dot.x, nearby[m].dot.y)) continue;
         for (let n = m + 1; n < nearby.length; n++) {
+          if (isInsideCard(nearby[n].dot.x, nearby[n].dot.y)) continue;
           const d1 = nearby[m].dot;
           const d2 = nearby[n].dot;
           const dotDist = Math.hypot(d1.x - d2.x, d1.y - d2.y);
