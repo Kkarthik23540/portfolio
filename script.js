@@ -20,21 +20,25 @@ const revealItems = document.querySelectorAll(".reveal");
 const sections = document.querySelectorAll("main section[id]");
 const contactForm = document.querySelector("#contactForm");
 const typewriter = document.querySelector(".typewriter");
-const progressBar = document.querySelector("#progressBar");
+const scrollBrick = document.querySelector("#scrollBrick");
+const scrollTrack = document.querySelector(".vertical-scroll-track");
 const statElements = document.querySelectorAll(".stat-number");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let statsAnimated = false;
 
 function updateScrollProgress() {
-  if (!progressBar) return;
+  if (!scrollBrick || !scrollTrack) return;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
   if (scrollHeight <= 0) {
-    progressBar.style.width = "0%";
+    scrollBrick.style.transform = "translateY(0)";
     return;
   }
-  const progress = Math.min(100, Math.max(0, (window.scrollY / scrollHeight) * 100));
-  progressBar.style.width = `${progress}%`;
+  const trackHeight = scrollTrack.clientHeight;
+  const brickHeight = scrollBrick.clientHeight;
+  const maxTravel = trackHeight - brickHeight;
+  const progress = Math.min(1, Math.max(0, window.scrollY / scrollHeight));
+  scrollBrick.style.transform = `translateY(${progress * maxTravel}px)`;
 }
 
 function runTypewriter() {
