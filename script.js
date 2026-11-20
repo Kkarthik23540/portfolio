@@ -104,7 +104,7 @@ updateScrollProgress();
 /* --- Cursor Spotlight Effect (Dynamic Cursor-Following Highlight for Cards) --- */
 function initSpotlight() {
   const cards = document.querySelectorAll(
-    ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel"
+    ".project-card, .skill-card, .edu-card, .cert-card, .profile-panel, .contact-social-card"
   );
   cards.forEach((card) => {
     card.addEventListener("mousemove", (e) => {
