@@ -667,6 +667,21 @@ h3 {
   transform: translateY(-2px);
 }
 
+.btn-arrow {
+  display: inline-block;
+  vertical-align: middle;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+}
+
+.btn.primary:hover .btn-arrow {
+  transform: translateY(3px);
+}
+
+.btn.secondary:hover .btn-arrow {
+  transform: translate(2px, -2px);
+}
+
 /* Shared Card Shell (Modern Glass & Refined Depth) */
 .project-card,
 .skill-card,
@@ -2094,6 +2109,109 @@ h3 {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   Navigation Project Tracer & Arrival Beacon
+   -------------------------------------------------------------------------- */
+.project-tracer-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999999;
+  overflow: hidden;
+}
+
+.project-tracer-ball {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #38bdf8 45%, var(--accent) 100%);
+  box-shadow:
+    0 0 14px #ffffff,
+    0 0 26px #38bdf8,
+    0 0 46px rgba(var(--accent-rgb), 0.9),
+    0 0 68px rgba(56, 189, 248, 0.45);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  will-change: transform;
+  z-index: 1000000;
+}
+
+.project-tracer-ball::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), 0.4);
+  filter: blur(4px);
+  animation: tracerAuraPulse 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes tracerAuraPulse {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1.35); opacity: 1; }
+}
+
+.tracer-spark {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 12px #38bdf8, 0 0 20px var(--accent);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 999999;
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+.arrival-beacon {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000000;
+  transform: translate(-50%, -50%);
+  animation: arrivalPulse 0.85s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes arrivalPulse {
+  0% {
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 25px 8px var(--accent);
+  }
+  100% {
+    width: 240px;
+    height: 240px;
+    opacity: 0;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 50px 20px rgba(var(--accent-rgb), 0);
+  }
+}
+
+.section-heading.target-highlight .section-tag {
+  animation: headingHighlightFlash 1.4s ease-out;
+}
+
+@keyframes headingHighlightFlash {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.7);
+  }
+  30% {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px 6px rgba(var(--accent-rgb), 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: none;
+  }
 }
 
 /* ==========================================================================
